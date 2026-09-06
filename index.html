@@ -23,50 +23,50 @@ if (window.Telegram && window.Telegram.WebApp) {
 <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
 
 <style>
-/* --- AÇIQ TEMA (YAŞIL / BƏYAZ) --- */
+/* --- AÇIQ TEMA (AĞ / YAŞIL / GÖY) --- */
 :root {
-  --bg-start: #F0FDF4; 
-  --bg-end: #DCFCE7;   
+  --bg-start: #F8FAFC; 
+  --bg-end: #E2E8F0;   
   --card-bg: #FFFFFF; 
-  --card-border: rgba(16, 185, 129, 0.15);
+  --card-border: rgba(0, 166, 81, 0.15);
   --text-light: #FFFFFF;
-  --text-dark: #064E3B;
-  --text-muted: #475569;
-  --accent: #10B981; 
+  --text-dark: #0F172A;
+  --text-muted: #64748B;
+  --accent: #00A651; /* Manat Az Premium Yaşıl */
   --accent-red: #EF4444; 
   --menu-bg: rgba(255, 255, 255, 0.95);
-  --progress-bg: rgba(16, 185, 129, 0.1);
-  --input-text: #064E3B; 
-  --input-bg: #F8FAFC;
+  --progress-bg: rgba(0, 166, 81, 0.1);
+  --input-text: #0F172A; 
+  --input-bg: #F1F5F9;
   
-  --loader-circle: rgba(16, 185, 129, 0.3);
-  --btn-gradient-start: #10B981; 
-  --btn-gradient-end: #047857;   
-  --btn-shadow: rgba(16, 185, 129, 0.3); 
+  --loader-circle: rgba(0, 166, 81, 0.3);
+  --btn-gradient-start: #00C65E; 
+  --btn-gradient-end: #009045;   
+  --btn-shadow: rgba(0, 166, 81, 0.3); 
   
-  --notification-bg: rgba(6, 78, 59, 0.95); 
+  --notification-bg: rgba(15, 23, 42, 0.95); 
   --notification-text: #FFFFFF; 
 }
 
-/* --- TÜND TEMA (TÜND YAŞIL / ZÜMRÜD) --- */
+/* --- TÜND TEMA (QARA / YAŞIL) --- */
 body.dark-theme {
-  --bg-start: #022C22;
-  --bg-end: #064E3B;   
-  --card-bg: #065F46;
-  --card-border: rgba(16, 185, 129, 0.2);
-  --text-light: #F0FDF4;
-  --text-dark: #F8FAFC;
+  --bg-start: #020617;
+  --bg-end: #0F172A;   
+  --card-bg: #1E293B;
+  --card-border: rgba(0, 198, 94, 0.2);
+  --text-light: #F8FAFC;
+  --text-dark: #F1F5F9;
   --text-muted: #94A3B8;
-  --accent: #34D399;
+  --accent: #00C65E;
   --accent-red: #F87171;
-  --menu-bg: rgba(2, 44, 34, 0.95);
-  --progress-bg: rgba(52, 211, 153, 0.15);
+  --menu-bg: rgba(30, 41, 59, 0.95);
+  --progress-bg: rgba(0, 198, 94, 0.15);
   --input-text: #F8FAFC; 
-  --input-bg: #022C22;
+  --input-bg: #0F172A;
   
-  --btn-shadow: rgba(52, 211, 153, 0.25); 
+  --btn-shadow: rgba(0, 198, 94, 0.25); 
   --notification-bg: rgba(255, 255, 255, 0.95);
-  --notification-text: #022C22;
+  --notification-text: #0F172A;
 }
 
 /* --- ÜMUMİ STİLLƏR --- */
@@ -104,15 +104,15 @@ body{
   transition: all 0.5s;
 }
 body.dark-theme .balance-card, body.dark-theme .ad-card, body.dark-theme .profile-card {
-  box-shadow:0 10px 40px rgba(0,0,0,0.5), 0 0 15px rgba(52, 211, 153, 0.05);
+  box-shadow:0 10px 40px rgba(0,0,0,0.5), 0 0 15px rgba(0, 198, 94, 0.05);
 }
 
 .balance-card h3{font-size:14px;color:var(--text-muted);margin-bottom:15px;text-transform:uppercase;letter-spacing:1.5px; font-weight: 800;}
 
 .balances-wrapper { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; }
 .amount-wrap { display: flex; align-items: center; justify-content: center; gap: 8px; }
-.amount{font-size:42px;font-weight:900;color:var(--text-dark); letter-spacing: -1px; text-shadow: 0 4px 15px rgba(0,0,0,0.05);}
-.currency{font-size:26px;font-weight:900;color:var(--accent); text-shadow: 0 4px 15px var(--btn-shadow);}
+.amount{font-size:48px;font-weight:900;color:var(--text-dark); letter-spacing: -1px; text-shadow: 0 4px 15px rgba(0,0,0,0.05);}
+.currency{font-size:30px;font-weight:900;color:var(--accent); text-shadow: 0 4px 15px var(--btn-shadow);}
 
 /* Çıxarış Üsulları */
 .method-list{display:grid; grid-template-columns: 1fr 1fr; gap: 15px; margin:20px 0;}
@@ -149,7 +149,7 @@ body.dark-theme .method { box-shadow: 0 8px 20px rgba(0,0,0,0.3); }
 .stat label{font-size:12px;color:var(--text-muted);font-weight: 800; text-transform: uppercase; letter-spacing: 1px;}
 
 .progress{height:14px;background:var(--input-bg);border-radius:14px;overflow:hidden;margin-top:30px; border: 1px solid var(--card-border); box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);}
-.progress-fill{height:100%;background:linear-gradient(90deg, var(--accent), var(--accent-red));width:0%;transition:width 1s cubic-bezier(0.16, 1, 0.3, 1); border-radius: 14px;} 
+.progress-fill{height:100%;background:linear-gradient(90deg, var(--accent), #00C65E);width:0%;transition:width 1s cubic-bezier(0.16, 1, 0.3, 1); border-radius: 14px;} 
 
 .ad-btn{width:100%;margin-top:30px;padding:20px;font-size:18px;font-weight:900;border:none;border-radius:24px;color:var(--text-light);cursor:pointer;background:linear-gradient(135deg,var(--btn-gradient-start),var(--btn-gradient-end));box-shadow:0 10px 30px var(--btn-shadow);position: relative; overflow: hidden; display:flex; align-items:center; justify-content:center; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);}
 .ad-btn:active:not(:disabled) {transform: scale(0.95);}
@@ -169,7 +169,7 @@ body.dark-theme .menu {box-shadow:0 25px 50px rgba(0,0,0,.6);}
 
 /* --- PROFIL SƏHİFƏSİ --- */
 .profile-header-wrap { display: flex; align-items: center; justify-content: center; flex-direction: column; margin-bottom: 30px; padding-bottom: 25px; border-bottom: 1px solid var(--card-border);}
-.profile-avatar { width: 85px; height: 85px; background: linear-gradient(135deg, var(--btn-gradient-start), var(--accent-red)); border-radius: 25px; display: flex; align-items: center; justify-content: center; color: #fff; box-shadow: 0 10px 25px var(--btn-shadow); position: relative; border: 3px solid var(--card-bg); margin-bottom: 15px; transition: 0.3s;}
+.profile-avatar { width: 85px; height: 85px; background: linear-gradient(135deg, var(--btn-gradient-start), var(--btn-gradient-end)); border-radius: 25px; display: flex; align-items: center; justify-content: center; color: #fff; box-shadow: 0 10px 25px var(--btn-shadow); position: relative; border: 3px solid var(--card-bg); margin-bottom: 15px; transition: 0.3s;}
 .profile-avatar:hover { transform: scale(1.05); }
 .profile-avatar .default-icon { width: 40px; height: 40px; stroke-width: 2.5px;}
 .profile-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 22px; display: none; }
@@ -186,7 +186,7 @@ body.dark-theme .menu {box-shadow:0 25px 50px rgba(0,0,0,.6);}
 .profile-stat-val { font-size: 24px; font-weight: 900; color: var(--text-dark); margin-bottom: 5px;}
 .profile-stat-lbl { font-size: 12px; font-weight: 800; color: var(--text-muted); text-transform: uppercase;}
 
-/* --- AYARLAR SƏHİFƏSİ --- */
+/* --- AYARLAR SƏHİFƏSİ ÜÇÜN STİLLƏR --- */
 .setting-item-row { display: flex; justify-content: space-between; align-items: center; padding: 18px 20px; background: var(--input-bg); border-radius: 20px; border: 1px solid var(--card-border); margin-bottom: 15px;}
 .setting-info-col { display: flex; align-items: center; gap: 12px; font-weight: 800; font-size: 16px; color: var(--text-dark); }
 .setting-icon-col { display: flex; align-items: center; justify-content: center; background: var(--card-bg); width: 40px; height: 40px; border-radius: 14px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); color: var(--accent);}
@@ -194,14 +194,14 @@ body.dark-theme .menu {box-shadow:0 25px 50px rgba(0,0,0,.6);}
 /* DİL SEÇİMİ */
 .lang-switch { display: flex; gap: 5px; background: var(--card-bg); padding: 4px; border-radius: 14px; border: 1px solid var(--card-border); box-shadow: inset 0 2px 5px rgba(0,0,0,0.03); }
 .lang-switch button { border: none; background: transparent; padding: 6px 12px; border-radius: 10px; font-weight: 800; font-size: 14px; color: var(--text-muted); cursor: pointer; transition: all 0.3s; }
-.lang-switch button.active { background: var(--accent); color: #fff; box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3); }
+.lang-switch button.active { background: var(--accent); color: #fff; box-shadow: 0 4px 10px rgba(0, 166, 81, 0.3); }
 
 .toggle-switch { width: 56px; height: 32px; background-color: #CBD5E1; border-radius: 30px; position: relative; cursor: pointer; transition: 0.3s; }
 body.dark-theme .toggle-switch { background-color: var(--accent); }
 .toggle-thumb { width: 26px; height: 26px; background-color: #fff; border-radius: 50%; position: absolute; top: 3px; left: 3px; transition: 0.3s cubic-bezier(0.16, 1, 0.3, 1); display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 10px rgba(0,0,0,0.15); }
 body.dark-theme .toggle-thumb { transform: translateX(24px); }
-.toggle-thumb i { width: 14px; height: 14px; color: #10B981; }
-body.dark-theme .toggle-thumb i { color: #022C22; }
+.toggle-thumb i { width: 14px; height: 14px; color: #0F172A; }
+body.dark-theme .toggle-thumb i { color: #0F172A; }
 
 .modal-btn-action { width: 100%; padding: 18px; border-radius: 20px; border: none; font-weight: 800; font-size: 16px; margin-bottom: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 12px; color: #fff; transition: all 0.2s; box-shadow: 0 8px 25px rgba(0,0,0,0.1);}
 .modal-btn-action:active {transform: scale(0.96);}
@@ -219,7 +219,7 @@ body.dark-theme .toggle-thumb i { color: #022C22; }
 
 /* AĞ SEÇİMİ (USDT) */
 .network-btn { flex: 1; padding: 15px; border-radius: 16px; border: 2px solid var(--card-border); background: var(--input-bg); font-weight: 900; font-size: 16px; color: var(--text-muted); transition: 0.3s; cursor: pointer; }
-.network-btn.active { border-color: var(--accent); color: var(--accent); background: rgba(16, 185, 129, 0.08); box-shadow: 0 4px 15px rgba(16, 185, 129, 0.1); }
+.network-btn.active { border-color: var(--accent); color: var(--accent); background: rgba(0, 166, 81, 0.08); box-shadow: 0 4px 15px rgba(0, 166, 81, 0.1); }
 
 #form button#withdrawBtn{width:100%;padding:20px;margin-top:25px;border:none;border-radius:24px;background:linear-gradient(135deg,var(--btn-gradient-start),var(--btn-gradient-end));color:var(--text-light);font-weight:900;font-size: 18px;cursor:pointer; box-shadow: 0 10px 30px var(--btn-shadow); display:flex; align-items:center; justify-content:center; gap:12px; transition: transform 0.2s;}
 #form button#withdrawBtn:active {transform: scale(0.95);}
@@ -244,7 +244,7 @@ body.dark-theme .alert.success { background: rgba(16, 185, 129, 0.1); border-col
 .history-date { font-size: 12px; color: var(--text-muted); font-weight: 600; }
 .history-status-wrap { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
 .history-amount { font-weight: 900; font-size: 17px; color: var(--accent); }
-.history-status { font-size: 11px; font-weight: 800; padding: 5px 12px; border-radius: 12px; background: rgba(16, 185, 129, 0.15); color: #047857; border: 1px solid rgba(16, 185, 129, 0.3); letter-spacing: 0.5px;}
+.history-status { font-size: 11px; font-weight: 800; padding: 5px 12px; border-radius: 12px; background: rgba(0, 166, 81, 0.15); color: #00A651; border: 1px solid rgba(0, 166, 81, 0.3); letter-spacing: 0.5px;}
 .history-empty { text-align: center; font-size: 15px; color: var(--text-muted); padding: 40px 20px; font-weight: 700; background: var(--input-bg); border-radius: 20px; border: 2px dashed var(--card-border);}
 
 /* --- MÜKƏMMƏL YÜKLƏNMƏ EKRANI --- */
@@ -273,7 +273,7 @@ body.dark-theme .alert.success { background: rgba(16, 185, 129, 0.1); border-col
 .loading-image-logo {
     width: 130px;
     height: 130px;
-    object-fit: contain;
+    object-fit: cover;
     border-radius: 32px;
     box-shadow: 0 20px 50px rgba(0,0,0,0.15);
     margin-bottom: 30px;
@@ -285,7 +285,7 @@ body.dark-theme .alert.success { background: rgba(16, 185, 129, 0.1); border-col
 }
 
 body.dark-theme .loading-image-logo {
-    box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 30px rgba(52, 211, 153, 0.15);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 30px rgba(0, 198, 94, 0.15);
 }
 
 @keyframes premiumPulse {
@@ -319,7 +319,7 @@ body.dark-theme .loading-image-logo {
     top: 50%; 
     left: 50%; 
     transform: translate(-50%, -50%) scale(0.8); 
-    background: linear-gradient(135deg, var(--btn-gradient-start), var(--accent-red)); 
+    background: linear-gradient(135deg, var(--btn-gradient-start), var(--btn-gradient-end)); 
     color: #FFFFFF; 
     padding: 20px 30px; 
     border-radius: 24px; 
@@ -356,11 +356,11 @@ body.dark-theme .loading-image-logo {
     width: max-content;
 }
 .reward-msg {
-    background: linear-gradient(135deg, var(--btn-gradient-start), var(--accent-red)); 
+    background: linear-gradient(135deg, var(--btn-gradient-start), var(--btn-gradient-end)); 
     color: #FFFFFF; 
     padding: 12px 20px; 
     border-radius: 16px; 
-    box-shadow: 0 10px 25px rgba(239, 68, 68, 0.3); 
+    box-shadow: 0 10px 25px rgba(0, 166, 81, 0.3); 
     font-weight: 800; 
     font-size: 14px; 
     opacity: 0; 
@@ -373,49 +373,6 @@ body.dark-theme .loading-image-logo {
     opacity: 1; 
     transform: translateY(0); 
 }
-
-/* MODAL STİLLƏRİ */
-.modal-overlay-daily {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.8); backdrop-filter: blur(10px);
-    display: flex; align-items: center; justify-content: center;
-    z-index: 100000; opacity: 0; visibility: hidden; transition: all 0.4s;
-}
-.modal-overlay-daily { background: rgba(2, 44, 34, 0.85); backdrop-filter: blur(12px); transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
-.modal-overlay-daily.show { opacity: 1; visibility: visible; }
-
-.daily-modal-content {
-    background: linear-gradient(135deg, var(--card-bg), var(--input-bg));
-    width: 90%; max-width: 340px; border-radius: 32px; padding: 40px 25px; text-align: center;
-    transform: translateY(30px) scale(0.9); opacity: 0; transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-    border: 2px solid rgba(16, 185, 129, 0.5);
-    box-shadow: 0 25px 60px rgba(16, 185, 129, 0.25), inset 0 0 20px rgba(16, 185, 129, 0.1);
-    position: relative; overflow: hidden;
-}
-.modal-overlay-daily.show .daily-modal-content { transform: translateY(0) scale(1); opacity: 1; }
-.daily-icon-wrapper {
-    width: 90px; height: 90px; margin: 0 auto 20px;
-    background: linear-gradient(135deg, #34D399, #10B981);
-    border-radius: 50%; display: flex; align-items: center; justify-content: center;
-    font-size: 45px; box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4);
-    animation: bounceDaily 2s infinite;
-}
-@keyframes bounceDaily { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-.daily-modal-title { font-size: 24px; font-weight: 900; color: var(--text-dark); margin-bottom: 12px; }
-.daily-modal-desc { font-size: 15px; color: var(--text-muted); font-weight: 600; line-height: 1.5; margin-bottom: 25px; }
-.daily-btn {
-    width: 100%; padding: 18px; border: none; border-radius: 20px; font-weight: 900; font-size: 17px;
-    background: linear-gradient(135deg, #10B981, #047857); color: white; cursor: pointer;
-    box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4); transition: transform 0.2s;
-}
-.daily-btn:active { transform: scale(0.95); }
-.daily-sunburst {
-    position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
-    background: repeating-conic-gradient(from 0deg, rgba(16, 185, 129, 0.05) 0deg 15deg, transparent 15deg 30deg);
-    animation: rotateSunburst 20s linear infinite; z-index: -1; pointer-events: none;
-}
-body.dark-theme .daily-sunburst { background: repeating-conic-gradient(from 0deg, rgba(16, 185, 129, 0.1) 0deg 15deg, transparent 15deg 30deg); }
-@keyframes rotateSunburst { 100% { transform: rotate(360deg); } }
 </style>
 </head>
 <body id="body">
@@ -457,26 +414,6 @@ if(currentLang !== 'az' && currentLang !== 'tr') currentLang = 'az';
 <script>
 document.getElementById('loadingTextNode').textContent = currentLang === 'tr' ? 'Yükleniyor' : 'Yüklənir';
 </script>
-
-<div id="celebrationModal" class="modal-overlay-daily">
-    <div class="daily-modal-content" style="border-color: #10B981; box-shadow: 0 25px 60px rgba(16, 185, 129, 0.25), inset 0 0 20px rgba(16, 185, 129, 0.1);">
-        <div class="daily-sunburst" style="background: repeating-conic-gradient(from 0deg, rgba(16, 185, 129, 0.05) 0deg 15deg, transparent 15deg 30deg);"></div>
-        <div class="daily-icon-wrapper" style="background: linear-gradient(135deg, #34D399, #10B981); box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4);">🎉</div>
-        <div class="daily-modal-title" data-i18n="cel_title">🎉 İcma Böyüyür!</div>
-        <div class="daily-modal-desc" data-i18n="cel_desc">Mükəmməl xəbərimiz var! Manat Az rəsmi kanalımız 100 istifadəçiyə çatdı! Bu münasibətlə sənə <b>0.50 ₼</b> hədiyyə edirik!</div>
-        <button id="claimCelebrationBtn" class="daily-btn" style="background: linear-gradient(135deg, #10B981, #059669); box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);" data-i18n="cel_btn">Mükafatı Al</button>
-    </div>
-</div>
-
-<div id="dailyBonusModal" class="modal-overlay-daily">
-    <div class="daily-modal-content">
-        <div class="daily-sunburst"></div>
-        <div class="daily-icon-wrapper">💸</div>
-        <div class="daily-modal-title" data-i18n="daily_bonus_title">Gündəlik Giriş Mükafatı</div>
-        <div class="daily-modal-desc" data-i18n="daily_bonus_desc">Hər gün tətbiqə daxil ol və <b>0.05 ₼</b> qazan!</div>
-        <button id="claimDailyBtn" class="daily-btn" data-i18n="claim_bonus">Mükafatı Al</button>
-    </div>
-</div>
 
 <div id="taskNotification">
     <i data-lucide="check-circle-2"></i>
@@ -670,7 +607,7 @@ document.getElementById('loadingTextNode').textContent = currentLang === 'tr' ? 
                 <div class="profile-stat-lbl" data-i18n="stat_tasks">Tapşırıq Edildi</div>
             </div>
             <div class="profile-stat-box" style="grid-column: span 2; background: linear-gradient(135deg, var(--input-bg), var(--card-bg)); border-color: var(--accent);">
-                <i data-lucide="coins" style="color: #10B981; width: 30px; height: 30px; margin-bottom: 15px;"></i>
+                <i data-lucide="coins" style="color: #00A651; width: 30px; height: 30px; margin-bottom: 15px;"></i>
                 <div class="profile-stat-val" id="statTotalAdEarn" style="color: var(--accent); font-size: 32px;">0.000 ₼</div>
                 <div class="profile-stat-lbl" data-i18n="stat_earn">Ümumi Reklam Qazancı</div>
             </div>
@@ -716,18 +653,7 @@ const i18n = {
         wp: "WhatsApp ilə Paylaş",
         tg: "Telegram ilə Paylaş",
         balance: "Balansınız",
-        
-        cel_title: "🎉 İcma Böyüyür!",
-        cel_desc: "Mükəmməl xəbərimiz var! Manat Az rəsmi kanalımız 100 istifadəçiyə çatdı! Bu münasibətlə sənə <b>0.50 ₼</b> hədiyyə edirik!",
-        cel_btn: "Mükafatı Al",
-        cel_claimed_msg: "🎉 0.50 ₼ balansınıza əlavə edildi!",
-        
-        daily_bonus_title: "Gündəlik Giriş Mükafatı",
-        daily_bonus_desc: "Hər gün tətbiqə daxil ol və <b>0.05 ₼</b> qazan!",
-        claim_bonus: "Mükafatı Al",
-        bonus_claimed_msg: "🎉 0.05 ₼ balansınıza əlavə edildi!",
         tasks: "Tapşırıqlar",
-        
         task1_title: "Kanala Qoşul",
         task1_desc: "Rəsmi Manat Az kanalına qoşul və qazan!",
         ads_title: "Gündəlik Reklamlar",
@@ -785,18 +711,7 @@ const i18n = {
         wp: "WhatsApp ile Paylaş",
         tg: "Telegram ile Paylaş",
         balance: "Bakiyeniz",
-        
-        cel_title: "🎉 Topluluk Büyüyor!",
-        cel_desc: "Harika bir haberimiz var! Resmi Manat Az kanalımız 100 kullanıcıya ulaştı! Bu özel günde sana <b>0.50 ₼</b> değerinde hediye ediyoruz!",
-        cel_btn: "Ödülü Al",
-        cel_claimed_msg: "🎉 0.50 ₼ bakiyenize eklendi!",
-        
-        daily_bonus_title: "Günlük Giriş Ödülü",
-        daily_bonus_desc: "Her gün uygulamaya gir ve <b>0.05 ₼</b> kazan!",
-        claim_bonus: "Ödülü Al",
-        bonus_claimed_msg: "🎉 0.05 ₼ bakiyenize eklendi!",
         tasks: "Görevler",
-        
         task1_title: "Kanala Katıl",
         task1_desc: "Resmi Manat Az kanalına katıl ve kazan!",
         ads_title: "Günlük Reklamlar",
@@ -862,16 +777,16 @@ function applyTheme(isDark) {
         if(themeThumb) themeThumb.innerHTML = '<i data-lucide="moon" style="width:14px;height:14px;"></i>'; 
         safeSet(THEME_KEY, 'dark');
         try {
-            if(window.Telegram?.WebApp?.setHeaderColor) window.Telegram.WebApp.setHeaderColor('#022C22');
-            if(window.Telegram?.WebApp?.setBackgroundColor) window.Telegram.WebApp.setBackgroundColor('#022C22');
+            if(window.Telegram?.WebApp?.setHeaderColor) window.Telegram.WebApp.setHeaderColor('#020617');
+            if(window.Telegram?.WebApp?.setBackgroundColor) window.Telegram.WebApp.setBackgroundColor('#020617');
         } catch(e){}
     } else {
         body.classList.remove('dark-theme');
         if(themeThumb) themeThumb.innerHTML = '<i data-lucide="sun" style="width:14px;height:14px;"></i>'; 
         safeSet(THEME_KEY, 'light');
         try {
-            if(window.Telegram?.WebApp?.setHeaderColor) window.Telegram.WebApp.setHeaderColor('#F0FDF4');
-            if(window.Telegram?.WebApp?.setBackgroundColor) window.Telegram.WebApp.setBackgroundColor('#F0FDF4');
+            if(window.Telegram?.WebApp?.setHeaderColor) window.Telegram.WebApp.setHeaderColor('#F8FAFC');
+            if(window.Telegram?.WebApp?.setBackgroundColor) window.Telegram.WebApp.setBackgroundColor('#F8FAFC');
         } catch(e){}
     }
     lucide.createIcons(); 
@@ -934,8 +849,6 @@ function renderMethodsList() {
           <span class="min-withdraw-label">${minText}</span>
         </div>`;
     });
-    
-    bindMethodClicks();
 }
 
 function updateTexts() {
@@ -992,22 +905,17 @@ let timeSynced = false;
 async function syncServerTime() {
     const apis = [
         async () => { const r = await fetch('https://worldtimeapi.org/api/timezone/Etc/UTC'); const d = await r.json(); return d.unixtime * 1000; },
-        async () => { const r = await fetch('https://yandex.com/time/sync.json?geo=213'); const d = await r.json(); return d.time; }, 
-        async () => { const r = await fetch('https://timeapi.io/api/Time/current/zone?timeZone=Etc/UTC'); const d = await r.json(); return new Date(d.dateTime + "Z").getTime(); }
+        async () => { const r = await fetch('https://yandex.com/time/sync.json?geo=213'); const d = await r.json(); return d.time; }
     ];
-
     try {
         const validTimes = await Promise.any(apis.map(api => api().then(t => {
             if (!t || isNaN(t) || t < 1700000000000) throw new Error('Yalnış Saat Formatı');
             return t;
         })));
-        
         serverTimeAtLoad = validTimes;
         localTimeAtLoad = performance.now(); 
         timeSynced = true;
-    } catch (error) {
-        timeSynced = false;
-    }
+    } catch (error) { timeSynced = false; }
 }
 
 function getTrueTime() {
@@ -1028,11 +936,7 @@ function getMoscowDateStr(timeMs) {
 
 const BAL_KEY = `bal_manataz_${userRefId}`;
 const COUNT_KEY = `cnt_manataz_${userRefId}`;
-
 const LAST_RESET_DATE_KEY = `last_date_manataz_${userRefId}`;
-const DAILY_CLAIM_DATE_KEY = `daily_claim_date_manataz_${userRefId}`;
-const CELEBRATION_100_CLAIMED_KEY = `cel_100_manataz_${userRefId}`; 
-
 const JOIN_APP_KEY = `joined_manataz_app_${userRefId}`;
 const REWARD_MSG_KEY = `rewardMsgExpire_manataz_${userRefId}`;
 const HISTORY_KEY = `withdraw_history_manataz_${userRefId}`;
@@ -1084,11 +988,8 @@ function loadProfilePic() {
 function loadProfile() {
     const savedName = localStorage.getItem(USERNAME_KEY);
     const displayEl = document.getElementById('displayUsername');
-    if (savedName) {
-        displayEl.textContent = savedName;
-    } else {
-        displayEl.textContent = 'İstifadəçi';
-    }
+    if (savedName) { displayEl.textContent = savedName; } 
+    else { displayEl.textContent = 'İstifadəçi'; }
     document.getElementById('displayUserId').textContent = userRefId;
     loadProfilePic();
     updateStatsUI();
@@ -1136,6 +1037,7 @@ function update(){
 
   const formattedBal = fC(bal, true);
   document.querySelectorAll('.bal-val').forEach(el => el.textContent = formattedBal);
+
   document.querySelectorAll('.reward-text-b').forEach(el => el.innerHTML = fC(REWARD_PER_AD));
 
   document.getElementById('adsCount').textContent=cnt;
@@ -1151,41 +1053,6 @@ function update(){
   updateTaskButtons(); 
   restoreAdBtnState();
 }
-
-document.getElementById('claimCelebrationBtn').addEventListener('click', () => {
-    if (!safeGet(CELEBRATION_100_CLAIMED_KEY, false)) {
-        bal += 0.50;
-        safeSet(BAL_KEY, bal);
-        
-        safeSet(CELEBRATION_100_CLAIMED_KEY, true);
-        document.getElementById('celebrationModal').classList.remove('show');
-        update();
-        showTaskNotification(i18n[currentLang].cel_claimed_msg);
-
-        let currentMoscowDate = getMoscowDateStr(getTrueTime());
-        let lastClaimDate = localStorage.getItem(DAILY_CLAIM_DATE_KEY);
-        if (lastClaimDate !== currentMoscowDate) {
-            setTimeout(() => {
-                document.getElementById('dailyBonusModal').classList.add('show');
-            }, 600);
-        }
-    }
-});
-
-document.getElementById('claimDailyBtn').addEventListener('click', () => {
-    let currentMoscowDate = getMoscowDateStr(getTrueTime());
-    let lastClaimDate = localStorage.getItem(DAILY_CLAIM_DATE_KEY);
-
-    if (lastClaimDate === currentMoscowDate) return; 
-    
-    bal += 0.05;
-    safeSet(BAL_KEY, bal);
-    localStorage.setItem(DAILY_CLAIM_DATE_KEY, currentMoscowDate);
-    
-    document.getElementById('dailyBonusModal').classList.remove('show');
-    update();
-    showTaskNotification(i18n[currentLang].bonus_claimed_msg);
-});
 
 function getLogoForType(t) {
     let m = allMethods.find(x => x.type === t);
@@ -1233,8 +1100,6 @@ function setupTaskBtn(btnId, storageKey, linkTextKey) {
         btn.className = 'task-btn completed'; 
         btn.innerHTML = `<i data-lucide="check-circle" style="width:20px;height:20px;"></i> ${i18n[currentLang].completed}`; 
         btn.disabled = true; 
-        btn.style.background = '';
-        btn.style.boxShadow = '';
     } else {
         if (!btn.classList.contains('waiting')) {
             btn.className = 'task-btn action'; 
@@ -1337,6 +1202,26 @@ function restoreAdBtnState() {
     msg.textContent = ''; checkAndDisplayRewardMsg();
 }
 
+function giveAdReward() {
+    bal += REWARD_PER_AD;
+    cnt += 1;
+    totalAdsAllTime += 1;
+    totalAdEarnAllTime += REWARD_PER_AD;
+    
+    safeSet(TOTAL_ADS_KEY, totalAdsAllTime);
+    safeSet(TOTAL_AD_EARN_KEY, totalAdEarnAllTime);
+    
+    update();
+    isAdRunning = false;
+    restoreAdBtnState();
+    displayRewardMsg(i18n[currentLang].ad_reward_text.replace('{reward}', fC(REWARD_PER_AD)));
+}
+
+function resetAdBtnState() {
+    isAdRunning = false;
+    restoreAdBtnState();
+}
+
 adBtn.onclick = async () => {
     update(); 
     if (cnt >= MAX_ADS_PER_DAY) { restoreAdBtnState(); return; }
@@ -1370,257 +1255,58 @@ adBtn.onclick = async () => {
             resetAdBtnState();
         }
     } catch(e) {
-        resetAdBtnState();
-    } 
-};
-
-function giveAdReward() {
-    bal += REWARD_PER_AD; 
-    cnt++; 
-    
-    let rewardTextStr = i18n[currentLang].ad_reward_text.replace('{reward}', fC(REWARD_PER_AD));
-    
-    totalAdsAllTime++;
-    totalAdEarnAllTime += REWARD_PER_AD;
-    safeSet(TOTAL_ADS_KEY, totalAdsAllTime);
-    safeSet(TOTAL_AD_EARN_KEY, totalAdEarnAllTime);
-    
-    update(); 
-    displayRewardMsg(rewardTextStr);
-    
-    if (cnt >= MAX_ADS_PER_DAY) {
-        isAdRunning = false;
-        restoreAdBtnState();
-    } else {
+        console.error(e);
         resetAdBtnState();
     }
-}
+};
 
-function resetAdBtnState() {
-    isAdRunning = false; 
-    restoreAdBtnState();
-}
-
-const taskNotification = document.getElementById('taskNotification');
-const taskNotificationText = document.getElementById('taskNotificationText');
-function showTaskNotification(message) {
-    taskNotificationText.innerHTML = message;
-    taskNotification.classList.remove('notification-hide'); 
-    taskNotification.classList.add('notification-show');
-    setTimeout(() => { 
-        taskNotification.classList.remove('notification-show'); 
-        taskNotification.classList.add('notification-hide'); 
-    }, 3500);
-}
-
-function handleTaskClick(btnId, url, storageKey, reward) {
-    const btn = document.getElementById(btnId);
-    if (!btn || btn.disabled) return;
+function showPage(pageId, btn) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById(pageId).classList.add('active');
     
-    window.open(url, '_blank'); 
-    btn.disabled = true; btn.classList.add('waiting'); 
-    btn.style.background = '';
-    btn.style.boxShadow = '';
-    btn.innerHTML = `<i data-lucide="loader" style="width:20px;height:20px;"></i> <span>${i18n[currentLang].checking}</span>`;
-    lucide.createIcons();
+    document.querySelectorAll('.menu button').forEach(b => b.classList.remove('active'));
+    if(btn) btn.classList.add('active');
+}
+
+function showTaskNotification(text) {
+    const notif = document.getElementById('taskNotification');
+    document.getElementById('taskNotificationText').innerHTML = text;
+    notif.classList.add('notification-show');
     setTimeout(() => {
-        bal += reward; 
-        totalTasksAllTime++;
-        safeSet(TOTAL_TASKS_KEY, totalTasksAllTime);
-        safeSet(BAL_KEY, bal); 
-        localStorage.setItem(storageKey, '1'); 
+        notif.classList.remove('notification-show');
+    }, 3000);
+}
+
+document.getElementById('joinAppBtn').addEventListener('click', () => {
+    window.open('https://t.me/manatazapp', '_blank');
+    if(!localStorage.getItem(JOIN_APP_KEY)) {
+        setTimeout(() => {
+            bal += TASK_APP_REWARD;
+            totalTasksAllTime += 1;
+            safeSet(TOTAL_TASKS_KEY, totalTasksAllTime);
+            localStorage.setItem(JOIN_APP_KEY, 'true');
+            update();
+            updateTaskButtons();
+            showTaskNotification(i18n[currentLang].task_success.replace('{reward}', fC(TASK_APP_REWARD)));
+        }, 10000); 
+    }
+});
+
+window.addEventListener('load', () => {
+    syncServerTime().then(() => {
+        updateTexts();
         update();
-        let sMsg = i18n[currentLang].task_success.replace('{reward}', fC(reward));
-        showTaskNotification(sMsg);
-    }, 4000);
-}
-
-document.getElementById('joinAppBtn').onclick = () => handleTaskClick('joinAppBtn', 'https://t.me/manatazapp', JOIN_APP_KEY, TASK_APP_REWARD);
-
-function showPage(id, btn){
-  if (btn.classList.contains('active')) return; 
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  document.querySelectorAll('.menu button').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  
-  if (id === 'adsPage') { restoreAdBtnState(); } 
-  else if (id === 'tasksPage') { updateTaskButtons(); } 
-  else {
-    let rewardMsgElement = document.getElementById('rewardMsg');
-    if (rewardMsgElement) rewardMsgElement.classList.remove('show');
-  }
-}
-
-const form = document.getElementById('form'); const details = document.getElementById('details');
-const amount = document.getElementById('amount'); const alertBox = document.getElementById('alert');
-const feeCalcBox = document.getElementById('feeCalcBox');
-const feeAmountSpan = document.getElementById('feeAmount');
-const receiveAmountSpan = document.getElementById('receiveAmount');
-
-function bindMethodClicks() {
-    document.querySelectorAll('.method').forEach(m => {
-      m.onclick = () => {
-        type = m.dataset.type;
-        methodName = m.dataset.name;
+        loadProfile();
         
-        document.getElementById('methodsContainer').style.display='none'; 
-        form.style.display='block';
-        
-        alertBox.style.display='none'; feeCalcBox.style.display='none';
-        details.value=''; amount.value='';
-        selectedNetwork = '';
-        
-        document.querySelectorAll('.network-btn').forEach(b => b.classList.remove('active'));
-
-        if(type === 'usdt') {
-            document.getElementById('networkWrapper').style.display = 'block';
-            details.style.display = 'none';
-            amount.style.display = 'none';
-            feeCalcBox.style.display = 'none';
-            document.getElementById('withdrawBtn').style.display = 'none';
-            details.type = 'text';
-            details.inputMode = 'text';
-        } else {
-            document.getElementById('networkWrapper').style.display = 'none';
-            details.style.display = 'block';
-            amount.style.display = 'block';
-            document.getElementById('withdrawBtn').style.display = 'flex';
-            details.type = 'text';
-            details.inputMode = 'numeric';
-            details.placeholder = type === 'bank' 
-                ? (currentLang==='tr' ? '16 haneli kart numarası' : '16 rəqəmli kart nömrəsi')
-                : (currentLang==='tr' ? '10 haneli telefon numarası' : '10 rəqəmli telefon nömrəsi daxil et');
-        }
-      };
+        setTimeout(() => {
+            const ls = document.getElementById('loadingScreen');
+            if(ls) {
+                ls.style.opacity = '0';
+                setTimeout(() => ls.style.display = 'none', 600);
+            }
+        }, 1200);
     });
-}
-
-document.querySelectorAll('.network-btn').forEach(btn => {
-    btn.onclick = () => {
-        document.querySelectorAll('.network-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        selectedNetwork = btn.dataset.net;
-        
-        details.style.display = 'block';
-        amount.style.display = 'block';
-        document.getElementById('withdrawBtn').style.display = 'flex';
-        
-        if(selectedNetwork === 'bep20') {
-            details.placeholder = currentLang === 'tr' ? 'BEP20 adresini girin' : 'BEP20 adresini daxil edin';
-        } else {
-            details.placeholder = currentLang === 'tr' ? 'TON adresini girin' : 'TON adresini daxil edin';
-        }
-    };
 });
-
-details.addEventListener('input', function() {
-    if(type !== 'usdt') {
-        this.value = this.value.replace(/\D/g, ''); 
-        let reqLength = type === 'bank' ? 16 : 10;
-        if(this.value.length > reqLength) {
-            this.value = this.value.slice(0, reqLength);
-        }
-    } else {
-        this.value = this.value.replace(/[^a-zA-Z0-9]/g, '');
-    }
-});
-
-document.getElementById('backBtn').onclick=()=>{
-  form.style.display='none'; document.getElementById('methodsContainer').style.display='block'; alertBox.style.display='none'; type=''; selectedNetwork='';
-};
-
-function calculateFee() {
-    const amt_input = parseFloat(amount.value);
-    if (!isNaN(amt_input) && amt_input > 0) {
-        const fee = amt_input * FEE_PERCENT;
-        const receive = amt_input - fee;
-        
-        feeAmountSpan.textContent = fee.toFixed(3);
-        receiveAmountSpan.textContent = receive.toFixed(3);
-        
-        feeCalcBox.style.display = 'block';
-    } else {
-        feeCalcBox.style.display = 'none';
-    }
-}
-amount.addEventListener('input', calculateFee);
-
-document.getElementById('withdrawBtn').onclick=()=>{
-  const det = details.value.trim(); const input_amt = parseFloat(amount.value);
-  alertBox.style.display='none';
-
-  if(!type){ showErr(i18n[currentLang].err_method); return; }
-  
-  if(type === 'usdt' && !selectedNetwork) {
-      showErr(i18n[currentLang].err_network); return;
-  }
-  
-  if(type !== 'usdt') {
-      let reqLength = type === 'bank' ? 16 : 10;
-      if(det.length !== reqLength){
-          if(type === 'bank') showErr(i18n[currentLang].err_bank);
-          else showErr(i18n[currentLang].err_phone);
-          return;
-      }
-  } else {
-      if(det.length < 10) { 
-          showErr(i18n[currentLang].err_usdt); return;
-      }
-  }
-
-  if(isNaN(input_amt) || input_amt <= 0){ showErr(i18n[currentLang].err_amount); return; }
-  
-  let amt_azn = currentLang === 'tr' ? (input_amt / 26.4) : input_amt;
-  
-  const EPSILON = 0.0001; 
-  if(amt_azn < MIN_WITHDRAW - EPSILON){ 
-      showErr(`${i18n[currentLang].err_min} ${fC(MIN_WITHDRAW)}`); 
-      return; 
-  }
-  if(amt_azn > bal + EPSILON){ showErr(i18n[currentLang].err_bal); return; }
-  
-  bal = Math.max(0, bal - amt_azn); 
-  safeSet(BAL_KEY,bal); update();
-  
-  const historyMethodName = type === 'usdt' ? `USDT (${selectedNetwork.toUpperCase()})` : methodName;
-  const historyItem = { type: type, methodName: historyMethodName, amount: amt_azn, status: 'pending', date: getTrueTime() };
-  withdrawHistory.push(historyItem); safeSet(HISTORY_KEY, withdrawHistory); renderHistory(); 
-
-  alertBox.innerHTML=`<i data-lucide="check-circle" style="vertical-align: middle; margin-right: 5px;"></i> ${i18n[currentLang].success_withdraw}`; 
-  lucide.createIcons();
-  alertBox.className='alert success'; alertBox.style.display='block';
-  setTimeout(()=>{
-    form.style.display='none'; document.getElementById('methodsContainer').style.display='block'; alertBox.style.display='none'; type=''; selectedNetwork='';
-  }, 2500);
-};
-
-function showErr(msg){ alertBox.innerHTML=`<i data-lucide="alert-circle" style="vertical-align: middle; margin-right: 5px;"></i> ${msg}`; lucide.createIcons(); alertBox.className='alert error'; alertBox.style.display='block'; }
-
-window.onload = async () => {
-    document.getElementById('loadingScreen').style.visibility = 'visible';
-    document.getElementById('loadingScreen').style.opacity = '1';
-    
-    await syncServerTime();
-    loadProfile();
-    updateTexts();
-    update();
-
-    setTimeout(() => {
-        document.getElementById('loadingScreen').style.opacity = '0';
-        setTimeout(() => { document.getElementById('loadingScreen').style.display = 'none'; }, 600);
-        
-        let currentMoscowDate = getMoscowDateStr(getTrueTime());
-        let lastClaimDate = localStorage.getItem(DAILY_CLAIM_DATE_KEY);
-        let hasClaimed100 = safeGet(CELEBRATION_100_CLAIMED_KEY, false);
-
-        if (!hasClaimed100) {
-            document.getElementById('celebrationModal').classList.add('show');
-        } else if (lastClaimDate !== currentMoscowDate) {
-            document.getElementById('dailyBonusModal').classList.add('show');
-        }
-    }, 1500);
-};
 </script>
 </body>
 </html>
