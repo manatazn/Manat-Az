@@ -378,7 +378,14 @@ body.dark-theme .loading-image-logo {
 <body id="body">
 
 <script>
-function safeGet(k,d=0){try{return JSON.parse(localStorage.getItem(k))??d;}catch{return d;}}
+function safeGet(k, d=0) {
+    try {
+        let val = JSON.parse(localStorage.getItem(k));
+        return (val !== null && val !== undefined) ? val : d;
+    } catch(e) {
+        return d;
+    }
+}
 function safeSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
 
 let tgUser = null;
@@ -640,7 +647,7 @@ document.getElementById('loadingTextNode').textContent = currentLang === 'tr' ? 
 </div>
 
 <script>
-lucide.createIcons();
+if (typeof lucide !== 'undefined') { lucide.createIcons(); }
 
 const i18n = {
     az: {
@@ -762,7 +769,7 @@ const i18n = {
 };
 
 let adManager = null;
-if (window.Adsgram) {
+if (typeof window.Adsgram !== 'undefined') {
     adManager = window.Adsgram.init({ blockId: "int-28369" });
 }
 
@@ -777,19 +784,19 @@ function applyTheme(isDark) {
         if(themeThumb) themeThumb.innerHTML = '<i data-lucide="moon" style="width:14px;height:14px;"></i>'; 
         safeSet(THEME_KEY, 'dark');
         try {
-            if(window.Telegram?.WebApp?.setHeaderColor) window.Telegram.WebApp.setHeaderColor('#020617');
-            if(window.Telegram?.WebApp?.setBackgroundColor) window.Telegram.WebApp.setBackgroundColor('#020617');
+            if(window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.setHeaderColor) window.Telegram.WebApp.setHeaderColor('#020617');
+            if(window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.setBackgroundColor) window.Telegram.WebApp.setBackgroundColor('#020617');
         } catch(e){}
     } else {
         body.classList.remove('dark-theme');
         if(themeThumb) themeThumb.innerHTML = '<i data-lucide="sun" style="width:14px;height:14px;"></i>'; 
         safeSet(THEME_KEY, 'light');
         try {
-            if(window.Telegram?.WebApp?.setHeaderColor) window.Telegram.WebApp.setHeaderColor('#F8FAFC');
-            if(window.Telegram?.WebApp?.setBackgroundColor) window.Telegram.WebApp.setBackgroundColor('#F8FAFC');
+            if(window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.setHeaderColor) window.Telegram.WebApp.setHeaderColor('#F8FAFC');
+            if(window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.setBackgroundColor) window.Telegram.WebApp.setBackgroundColor('#F8FAFC');
         } catch(e){}
     }
-    lucide.createIcons(); 
+    if (typeof lucide !== 'undefined') { lucide.createIcons(); } 
 }
 function toggleTheme() {
     const isDark = body.classList.contains('dark-theme');
@@ -903,19 +910,28 @@ let localTimeAtLoad = 0;
 let timeSynced = false;
 
 async function syncServerTime() {
-    const apis = [
-        async () => { const r = await fetch('https://worldtimeapi.org/api/timezone/Etc/UTC'); const d = await r.json(); return d.unixtime * 1000; },
-        async () => { const r = await fetch('https://yandex.com/time/sync.json?geo=213'); const d = await r.json(); return d.time; }
-    ];
+    timeSynced = false;
     try {
-        const validTimes = await Promise.any(apis.map(api => api().then(t => {
-            if (!t || isNaN(t) || t < 1700000000000) throw new Error('Yalnış Saat Formatı');
-            return t;
-        })));
-        serverTimeAtLoad = validTimes;
-        localTimeAtLoad = performance.now(); 
-        timeSynced = true;
-    } catch (error) { timeSynced = false; }
+        const r = await fetch('https://worldtimeapi.org/api/timezone/Etc/UTC');
+        const d = await r.json();
+        if (d.unixtime && d.unixtime * 1000 >= 1700000000000) {
+            serverTimeAtLoad = d.unixtime * 1000;
+            localTimeAtLoad = performance.now(); 
+            timeSynced = true;
+            return;
+        }
+    } catch (e) {}
+
+    try {
+        const r = await fetch('https://yandex.com/time/sync.json?geo=213');
+        const d = await r.json();
+        if (d.time && d.time >= 1700000000000) {
+            serverTimeAtLoad = d.time;
+            localTimeAtLoad = performance.now(); 
+            timeSynced = true;
+            return;
+        }
+    } catch (e) {}
 }
 
 function getTrueTime() {
@@ -1111,7 +1127,7 @@ function setupTaskBtn(btnId, storageKey, linkTextKey) {
 
 function updateTaskButtons() {
     setupTaskBtn('joinAppBtn', JOIN_APP_KEY, 'task1_title');
-    lucide.createIcons(); 
+    if (typeof lucide !== 'undefined') { lucide.createIcons(); } 
 }
 
 const adBtn = document.getElementById('adBtn'), msg = document.getElementById('msg');
@@ -1182,7 +1198,7 @@ function restoreAdBtnState() {
     if (isAdRunning) {
         adBtn.classList.add('waiting'); adBtn.disabled = true;
         if(textSpan) { textSpan.setAttribute('data-i18n', 'watching_ad'); textSpan.textContent = i18n[currentLang].watching_ad; }
-        if(icon) { icon.setAttribute('data-lucide', 'loader'); lucide.createIcons(); }
+        if(icon) { icon.setAttribute('data-lucide', 'loader'); if (typeof lucide !== 'undefined') lucide.createIcons(); }
         return; 
     }
 
@@ -1190,7 +1206,7 @@ function restoreAdBtnState() {
         adBtn.classList.add('waiting'); 
         adBtn.disabled = true; 
         if(textSpan) { textSpan.setAttribute('data-i18n', 'limit_reached'); textSpan.textContent = i18n[currentLang].limit_reached; }
-        if(icon) { icon.setAttribute('data-lucide', 'lock'); lucide.createIcons(); }
+        if(icon) { icon.setAttribute('data-lucide', 'lock'); if (typeof lucide !== 'undefined') lucide.createIcons(); }
         msg.textContent = i18n[currentLang].msg_limit; 
         checkAndDisplayRewardMsg(); 
         return; 
@@ -1198,7 +1214,7 @@ function restoreAdBtnState() {
     
     adBtn.classList.remove('waiting'); adBtn.disabled = false; 
     if(textSpan) { textSpan.setAttribute('data-i18n', 'watch_ad'); textSpan.textContent = i18n[currentLang].watch_ad; }
-    if(icon) { icon.setAttribute('data-lucide', 'play'); lucide.createIcons(); }
+    if(icon) { icon.setAttribute('data-lucide', 'play'); if (typeof lucide !== 'undefined') lucide.createIcons(); }
     msg.textContent = ''; checkAndDisplayRewardMsg();
 }
 
@@ -1241,7 +1257,7 @@ adBtn.onclick = async () => {
     msg.textContent = '';
     
     try {
-        if (!adManager && window.Adsgram) {
+        if (!adManager && typeof window.Adsgram !== 'undefined') {
             adManager = window.Adsgram.init({ blockId: "int-28369" });
         }
         
@@ -1292,7 +1308,10 @@ document.getElementById('joinAppBtn').addEventListener('click', () => {
     }
 });
 
-window.addEventListener('load', () => {
+function initApp() {
+    if (window.appInitialized) return;
+    window.appInitialized = true;
+    
     syncServerTime().then(() => {
         updateTexts();
         update();
@@ -1306,7 +1325,21 @@ window.addEventListener('load', () => {
             }
         }, 1200);
     });
-});
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initApp);
+} else {
+    initApp();
+}
+
+setTimeout(() => {
+    const ls = document.getElementById('loadingScreen');
+    if(ls && ls.style.display !== 'none') {
+        ls.style.opacity = '0';
+        setTimeout(() => ls.style.display = 'none', 600);
+    }
+}, 5000);
 </script>
 </body>
 </html>
