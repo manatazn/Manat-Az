@@ -1,0 +1,1626 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover" />
+<title id="pageTitle">Manat Az</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+<script>
+if (window.Telegram && window.Telegram.WebApp) {
+    window.Telegram.WebApp.ready();
+    window.Telegram.WebApp.expand();
+    try {
+        if (window.Telegram.WebApp.requestFullscreen) {
+            window.Telegram.WebApp.requestFullscreen();
+        }
+    } catch(e) {}
+}
+</script>
+
+<script src="https://unpkg.com/lucide@latest"></script>
+<script src="https://sad.adsgram.ai/js/sad.min.js"></script>
+
+<style>
+/* --- AÇIQ TEMA (YAŞIL / BƏYAZ) --- */
+:root {
+  --bg-start: #F0FDF4; 
+  --bg-end: #DCFCE7;   
+  --card-bg: #FFFFFF; 
+  --card-border: rgba(16, 185, 129, 0.15);
+  --text-light: #FFFFFF;
+  --text-dark: #064E3B;
+  --text-muted: #475569;
+  --accent: #10B981; 
+  --accent-red: #EF4444; 
+  --menu-bg: rgba(255, 255, 255, 0.95);
+  --progress-bg: rgba(16, 185, 129, 0.1);
+  --input-text: #064E3B; 
+  --input-bg: #F8FAFC;
+  
+  --loader-circle: rgba(16, 185, 129, 0.3);
+  --btn-gradient-start: #10B981; 
+  --btn-gradient-end: #047857;   
+  --btn-shadow: rgba(16, 185, 129, 0.3); 
+  
+  --notification-bg: rgba(6, 78, 59, 0.95); 
+  --notification-text: #FFFFFF; 
+}
+
+/* --- TÜND TEMA (TÜND YAŞIL / ZÜMRÜD) --- */
+body.dark-theme {
+  --bg-start: #022C22;
+  --bg-end: #064E3B;   
+  --card-bg: #065F46;
+  --card-border: rgba(16, 185, 129, 0.2);
+  --text-light: #F0FDF4;
+  --text-dark: #F8FAFC;
+  --text-muted: #94A3B8;
+  --accent: #34D399;
+  --accent-red: #F87171;
+  --menu-bg: rgba(2, 44, 34, 0.95);
+  --progress-bg: rgba(52, 211, 153, 0.15);
+  --input-text: #F8FAFC; 
+  --input-bg: #022C22;
+  
+  --btn-shadow: rgba(52, 211, 153, 0.25); 
+  --notification-bg: rgba(255, 255, 255, 0.95);
+  --notification-text: #022C22;
+}
+
+/* --- ÜMUMİ STİLLƏR --- */
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  font-family:'Inter',sans-serif;
+  background:linear-gradient(135deg,var(--bg-start),var(--bg-end));
+  background-attachment: fixed;
+  color:var(--text-dark);
+  min-height:var(--tg-viewport-stable-height, 100vh);
+  user-select:none;
+  -webkit-user-select:none;
+  -webkit-tap-highlight-color:transparent;
+  transition: background-color 0.5s ease, color 0.5s ease; 
+  padding-bottom: 90px; 
+}
+
+.container{max-width:480px;margin:auto;padding:40px 20px 20px;} 
+
+.page{display:none;animation:fadeIn .4s cubic-bezier(0.16, 1, 0.3, 1);}
+.page.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(15px) scale(0.98);}to{opacity:1;transform:translateY(0) scale(1);}}
+
+/* KART DİZAYNLARI */
+.balance-card, .ad-card, .profile-card{
+  background:var(--card-bg);
+  border-radius:30px;
+  padding:30px 20px;
+  margin-bottom:20px;
+  box-shadow:0 10px 40px rgba(0, 0, 0, 0.05);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  text-align:center;
+  border:1px solid var(--card-border);
+  transition: all 0.5s;
+}
+body.dark-theme .balance-card, body.dark-theme .ad-card, body.dark-theme .profile-card {
+  box-shadow:0 10px 40px rgba(0,0,0,0.5), 0 0 15px rgba(52, 211, 153, 0.05);
+}
+
+.balance-card h3{font-size:14px;color:var(--text-muted);margin-bottom:15px;text-transform:uppercase;letter-spacing:1.5px; font-weight: 800;}
+
+.balances-wrapper { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; }
+.amount-wrap { display: flex; align-items: center; justify-content: center; gap: 8px; }
+.amount{font-size:42px;font-weight:900;color:var(--text-dark); letter-spacing: -1px; text-shadow: 0 4px 15px rgba(0,0,0,0.05);}
+.currency{font-size:26px;font-weight:900;color:var(--accent); text-shadow: 0 4px 15px var(--btn-shadow);}
+
+/* Çıxarış Üsulları */
+.method-list{display:grid; grid-template-columns: 1fr 1fr; gap: 15px; margin:20px 0;}
+.method{padding:25px 15px;border-radius:24px;background:var(--card-bg); color:var(--text-dark);text-align:center;font-weight:800;cursor:pointer;display:flex;flex-direction: column;align-items: center;justify-content: center;position: relative;overflow: hidden; border: 1px solid var(--card-border); box-shadow: 0 8px 20px rgba(0,0,0,0.04); transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);}
+body.dark-theme .method { box-shadow: 0 8px 20px rgba(0,0,0,0.3); }
+.method:hover { border-color: var(--accent); background: var(--card-bg); box-shadow: 0 10px 30px var(--btn-shadow); transform: translateY(-3px);}
+.method:active {transform: scale(0.95);}
+.method-logo{width: 60px; height: 60px; margin-bottom: 15px;border-radius: 18px; object-fit: cover; background-color: #fff; box-shadow: 0 8px 20px rgba(0,0,0,0.1); pointer-events: none; -webkit-user-drag: none;}
+.method-text { font-size: 16px; letter-spacing: 0.2px;}
+.min-withdraw-label {margin-top: 10px; font-size: 11px;font-weight: 800;color: var(--accent-red);background: rgba(239, 68, 68, 0.1);padding: 6px 12px;border-radius: 12px; letter-spacing: 0.5px;}
+
+.ad-card{margin-bottom:15px; padding: 45px 25px 30px 25px; position: relative;}
+.ad-card h2{font-size:22px;color:var(--text-dark);margin-bottom:8px; font-weight: 900;}
+.ad-card p{margin:4px 0;color:var(--text-muted);font-size:15px; font-weight: 600;}
+
+/* GÖREVLƏR */
+.task-list { display: flex; flex-direction: column; gap: 15px; margin-bottom: 20px; }
+.task-item { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 26px; padding: 25px 20px; position: relative; text-align: left; box-shadow: 0 8px 25px rgba(0,0,0,0.03); transition: all 0.5s;}
+.task-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+.task-title { font-size: 18px; font-weight: 800; display: flex; align-items: center; gap: 12px; color: var(--text-dark); }
+.task-icon { display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 14px; color: white; background: linear-gradient(135deg, var(--btn-gradient-start), var(--btn-gradient-end)); box-shadow: 0 6px 20px var(--btn-shadow);}
+.task-reward-badge { background: var(--progress-bg); color: var(--accent); padding: 8px 16px; border-radius: 14px; font-weight: 900; font-size: 15px; border: 1px solid var(--card-border);}
+.task-desc { font-size: 14px; color: var(--text-muted); font-weight: 600; margin-bottom: 20px; line-height: 1.5; }
+
+.task-btn { width: 100%; padding: 18px; font-size: 16px; font-weight: 800; border: none; border-radius: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);}
+.task-btn:active:not(:disabled) {transform: scale(0.96);}
+.task-btn.action { background: linear-gradient(135deg, var(--btn-gradient-start), var(--btn-gradient-end)); color: white; box-shadow: 0 8px 25px var(--btn-shadow); }
+.task-btn.completed { background: var(--input-bg); color: var(--accent-red); cursor: not-allowed; box-shadow: none; border: 1px solid var(--card-border); }
+.task-btn.waiting { background: var(--progress-bg) !important; color: var(--accent) !important; cursor: not-allowed !important; box-shadow: none !important;}
+
+.stats{display:flex;justify-content:space-between;margin-top:30px; gap: 15px;}
+.stat{background:var(--input-bg);border-radius:20px;padding:20px 15px; flex: 1; border: 1px solid var(--card-border); transition: 0.3s;}
+.stat span{display:block;font-size:26px;font-weight:900;color:var(--text-dark); margin-bottom: 4px; text-shadow: 0 2px 10px rgba(0,0,0,0.05);}
+.stat label{font-size:12px;color:var(--text-muted);font-weight: 800; text-transform: uppercase; letter-spacing: 1px;}
+
+.progress{height:14px;background:var(--input-bg);border-radius:14px;overflow:hidden;margin-top:30px; border: 1px solid var(--card-border); box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);}
+.progress-fill{height:100%;background:linear-gradient(90deg, var(--accent), var(--accent-red));width:0%;transition:width 1s cubic-bezier(0.16, 1, 0.3, 1); border-radius: 14px;} 
+
+.ad-btn{width:100%;margin-top:30px;padding:20px;font-size:18px;font-weight:900;border:none;border-radius:24px;color:var(--text-light);cursor:pointer;background:linear-gradient(135deg,var(--btn-gradient-start),var(--btn-gradient-end));box-shadow:0 10px 30px var(--btn-shadow);position: relative; overflow: hidden; display:flex; align-items:center; justify-content:center; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);}
+.ad-btn:active:not(:disabled) {transform: scale(0.95);}
+.ad-btn.waiting { background: var(--progress-bg) !important; color: var(--accent) !important; cursor: not-allowed !important; box-shadow: none !important; border: 1px solid var(--card-border) !important; }
+.ad-btn-content { position: relative; z-index: 2; display: flex; align-items:center; gap: 12px;}
+
+#msg {margin-top: 18px; font-size: 15px;font-weight: 800; padding: 0;color: var(--accent-red);}
+
+/* FLOATING MENU */
+.menu{position:fixed;bottom:25px;left:50%;transform:translateX(-50%);width:94%;max-width:460px; display:flex;justify-content:space-between;background:var(--menu-bg);padding:10px; border-radius:36px;box-shadow:0 25px 50px rgba(0,0,0,.1);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);z-index: 999;border: 1px solid var(--card-border);}
+body.dark-theme .menu {box-shadow:0 25px 50px rgba(0,0,0,.6);}
+.menu button{flex:1;margin:0 2px; padding: 12px 0;border:none;border-radius:28px;background:transparent;color:var(--text-muted);cursor: pointer;transition:all 0.4s cubic-bezier(0.16, 1, 0.3, 1);display: flex;flex-direction: column;align-items: center;justify-content: center;height: 65px;}
+.menu button .nav-icon { width: 22px; height: 22px; margin-bottom: 6px; transition: 0.3s; stroke-width: 2.2px; }
+.menu button .nav-text { font-size: 10px; font-weight: 800; transition: 0.3s;}
+.menu button.active{background:linear-gradient(135deg, var(--btn-gradient-start), var(--btn-gradient-end));color: white;cursor: default; pointer-events: none; box-shadow: 0 8px 20px var(--btn-shadow); transform: translateY(-5px);}
+.menu button.active .nav-icon { stroke-width: 2.5px; transform: translateY(-2px);} 
+
+/* --- PROFIL SƏHİFƏSİ --- */
+.profile-header-wrap { display: flex; align-items: center; justify-content: center; flex-direction: column; margin-bottom: 30px; padding-bottom: 25px; border-bottom: 1px solid var(--card-border);}
+.profile-avatar { width: 85px; height: 85px; background: linear-gradient(135deg, var(--btn-gradient-start), var(--accent-red)); border-radius: 25px; display: flex; align-items: center; justify-content: center; color: #fff; box-shadow: 0 10px 25px var(--btn-shadow); position: relative; border: 3px solid var(--card-bg); margin-bottom: 15px; transition: 0.3s;}
+.profile-avatar:hover { transform: scale(1.05); }
+.profile-avatar .default-icon { width: 40px; height: 40px; stroke-width: 2.5px;}
+.profile-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 22px; display: none; }
+.profile-avatar.has-image img { display: block; }
+.profile-avatar.has-image .default-icon { display: none; }
+
+.profile-name { font-size: 24px; font-weight: 900; color: var(--text-dark); margin-bottom: 6px; text-align: center;}
+.profile-id { font-size: 14px; font-weight: 700; color: var(--accent); background: var(--progress-bg); padding: 5px 15px; border-radius: 12px; display: inline-block;}
+
+.profile-stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px;}
+.profile-stat-box { background: var(--input-bg); padding: 20px; border-radius: 24px; border: 1px solid var(--card-border); text-align: center; transition: 0.3s; display: flex; flex-direction: column; align-items: center; justify-content: center;}
+.profile-stat-box:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.03);}
+.profile-stat-box i { margin-bottom: 10px; width: 24px; height: 24px; stroke-width: 2.5px; }
+.profile-stat-val { font-size: 24px; font-weight: 900; color: var(--text-dark); margin-bottom: 5px;}
+.profile-stat-lbl { font-size: 12px; font-weight: 800; color: var(--text-muted); text-transform: uppercase;}
+
+/* --- AYARLAR SƏHİFƏSİ --- */
+.setting-item-row { display: flex; justify-content: space-between; align-items: center; padding: 18px 20px; background: var(--input-bg); border-radius: 20px; border: 1px solid var(--card-border); margin-bottom: 15px;}
+.setting-info-col { display: flex; align-items: center; gap: 12px; font-weight: 800; font-size: 16px; color: var(--text-dark); }
+.setting-icon-col { display: flex; align-items: center; justify-content: center; background: var(--card-bg); width: 40px; height: 40px; border-radius: 14px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); color: var(--accent);}
+
+/* DİL SEÇİMİ */
+.lang-switch { display: flex; gap: 5px; background: var(--card-bg); padding: 4px; border-radius: 14px; border: 1px solid var(--card-border); box-shadow: inset 0 2px 5px rgba(0,0,0,0.03); }
+.lang-switch button { border: none; background: transparent; padding: 6px 12px; border-radius: 10px; font-weight: 800; font-size: 14px; color: var(--text-muted); cursor: pointer; transition: all 0.3s; }
+.lang-switch button.active { background: var(--accent); color: #fff; box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3); }
+
+.toggle-switch { width: 56px; height: 32px; background-color: #CBD5E1; border-radius: 30px; position: relative; cursor: pointer; transition: 0.3s; }
+body.dark-theme .toggle-switch { background-color: var(--accent); }
+.toggle-thumb { width: 26px; height: 26px; background-color: #fff; border-radius: 50%; position: absolute; top: 3px; left: 3px; transition: 0.3s cubic-bezier(0.16, 1, 0.3, 1); display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 10px rgba(0,0,0,0.15); }
+body.dark-theme .toggle-thumb { transform: translateX(24px); }
+.toggle-thumb i { width: 14px; height: 14px; color: #10B981; }
+body.dark-theme .toggle-thumb i { color: #022C22; }
+
+.modal-btn-action { width: 100%; padding: 18px; border-radius: 20px; border: none; font-weight: 800; font-size: 16px; margin-bottom: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 12px; color: #fff; transition: all 0.2s; box-shadow: 0 8px 25px rgba(0,0,0,0.1);}
+.modal-btn-action:active {transform: scale(0.96);}
+.modal-btn-action.copy-btn { background: var(--input-bg); color: var(--text-dark); border: 1px solid var(--card-border); box-shadow: 0 4px 15px rgba(0,0,0,0.02); }
+.modal-btn-action.whatsapp-btn { background: #25D366; }
+.modal-btn-action.telegram-btn { background: #0088cc; }
+
+#form{display:none;}
+.back-btn-ui {background: var(--accent); border: none; color: #fff; font-weight:800; font-size:15px; border-radius: 16px; padding: 14px 24px; width: max-content; margin: 0 0 25px 0; box-shadow: 0 8px 20px var(--btn-shadow); display: flex; align-items: center; gap: 8px; cursor: pointer; transition: 0.2s;}
+.back-btn-ui:active { transform: scale(0.95); }
+
+#form input{width:100%;padding:20px;margin:12px 0;border-radius:20px;border:2px solid transparent;background:var(--input-bg);color:var(--input-text); font-size: 16px;font-weight: 700;outline: none;transition: all 0.3s; font-family: 'Inter', sans-serif; box-shadow: inset 0 2px 6px rgba(0,0,0,0.02);}
+#form input:focus { border-color: var(--accent); background: var(--card-bg); box-shadow: 0 0 0 5px var(--progress-bg);}
+#form input::placeholder { color: var(--text-muted); opacity: 0.7; font-weight: 600;}
+
+/* AĞ SEÇİMİ (USDT) */
+.network-btn { flex: 1; padding: 15px; border-radius: 16px; border: 2px solid var(--card-border); background: var(--input-bg); font-weight: 900; font-size: 16px; color: var(--text-muted); transition: 0.3s; cursor: pointer; }
+.network-btn.active { border-color: var(--accent); color: var(--accent); background: rgba(16, 185, 129, 0.08); box-shadow: 0 4px 15px rgba(16, 185, 129, 0.1); }
+
+#form button#withdrawBtn{width:100%;padding:20px;margin-top:25px;border:none;border-radius:24px;background:linear-gradient(135deg,var(--btn-gradient-start),var(--btn-gradient-end));color:var(--text-light);font-weight:900;font-size: 18px;cursor:pointer; box-shadow: 0 10px 30px var(--btn-shadow); display:flex; align-items:center; justify-content:center; gap:12px; transition: transform 0.2s;}
+#form button#withdrawBtn:active {transform: scale(0.95);}
+
+.fee-calc-box { font-size: 14px; font-weight: 700; color: var(--text-muted); margin: 10px 0 20px; text-align: left; padding: 20px; background: var(--input-bg); border-radius: 20px; border: 1px dashed var(--card-border); display: none;}
+.fee-calc-box span { color: var(--text-dark); font-weight: 900; }
+
+.alert{margin-top:20px;padding:18px;border-radius:18px;display:none; font-weight: 800; text-align: center; font-size: 15px; animation: fadeIn 0.3s ease; box-shadow: 0 8px 20px rgba(0,0,0,0.05);}
+.alert.error{background:#FEF2F2;color:#EF4444; border: 1px solid #FECACA;}
+body.dark-theme .alert.error { background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.3); }
+.alert.success{background:#F0FDF4;color:#10B981; border: 1px solid #A7F3D0;}
+body.dark-theme .alert.success { background: rgba(16, 185, 129, 0.1); border-color: rgba(16, 185, 129, 0.3); }
+
+.history-card { background: var(--card-bg); border-radius: 30px; padding: 30px 20px; margin-top: 30px; border: 1px solid var(--card-border); text-align: left; box-shadow: 0 10px 40px rgba(0,0,0,0.03);}
+.history-title { font-size: 20px; font-weight: 900; color: var(--text-dark); margin-bottom: 25px; text-align: center; }
+.history-list { display: flex; flex-direction: column; gap: 15px; }
+.history-item { background: var(--input-bg); padding: 18px; border-radius: 20px; border: 1px solid var(--card-border); display: flex; justify-content: space-between; align-items: center; transition: 0.3s;}
+.history-item:hover { transform: translateX(5px); background: var(--card-bg); border-color: var(--accent); box-shadow: 0 5px 15px var(--btn-shadow);}
+.history-info { display: flex; flex-direction: column; gap: 8px; }
+.history-method { font-weight: 800; font-size: 16px; color: var(--text-dark); display: flex; align-items: center; gap: 10px;}
+.history-method img { width: 26px; height: 26px; border-radius: 8px; pointer-events: none; box-shadow: 0 2px 5px rgba(0,0,0,0.1);}
+.history-date { font-size: 12px; color: var(--text-muted); font-weight: 600; }
+.history-status-wrap { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+.history-amount { font-weight: 900; font-size: 17px; color: var(--accent); }
+.history-status { font-size: 11px; font-weight: 800; padding: 5px 12px; border-radius: 12px; background: rgba(16, 185, 129, 0.15); color: #047857; border: 1px solid rgba(16, 185, 129, 0.3); letter-spacing: 0.5px;}
+.history-empty { text-align: center; font-size: 15px; color: var(--text-muted); padding: 40px 20px; font-weight: 700; background: var(--input-bg); border-radius: 20px; border: 2px dashed var(--card-border);}
+
+/* --- MÜKƏMMƏL YÜKLƏNMƏ EKRANI --- */
+#loadingScreen {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    height: var(--tg-viewport-stable-height, 100vh);
+    background: var(--bg-start);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 99999;
+    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.6s;
+    overflow: hidden; 
+    
+    -webkit-touch-callout: none !important;
+    -webkit-user-select: none !important;
+    -khtml-user-select: none !important;
+    -moz-user-select: none !important;
+    -ms-user-select: none !important;
+    user-select: none !important;
+}
+
+.loading-image-logo {
+    width: 130px;
+    height: 130px;
+    object-fit: contain;
+    border-radius: 32px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+    margin-bottom: 30px;
+    animation: premiumPulse 2s cubic-bezier(0.16, 1, 0.3, 1) infinite alternate;
+    pointer-events: none !important;
+    -webkit-user-drag: none !important;
+    -webkit-touch-callout: none !important;
+    user-select: none !important;
+}
+
+body.dark-theme .loading-image-logo {
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 30px rgba(52, 211, 153, 0.15);
+}
+
+@keyframes premiumPulse {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.08); }
+}
+
+.loading-text {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--text-dark);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.loading-dots::after {
+    content: '.';
+    animation: dots 1.5s steps(4, end) infinite;
+}
+
+@keyframes dots {
+    0%, 20% { color: transparent; text-shadow: .25em 0 0 transparent, .5em 0 0 transparent; }
+    40% { color: var(--accent); text-shadow: .25em 0 0 transparent, .5em 0 0 transparent; }
+    60% { text-shadow: .25em 0 0 var(--accent), .5em 0 0 transparent; }
+    80%, 100% { text-shadow: .25em 0 0 var(--accent), .5em 0 0 var(--accent); }
+}
+
+/* YENİLƏNMİŞ BİLDİRİŞLƏR */
+#taskNotification {
+    position: fixed; 
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%) scale(0.8); 
+    background: linear-gradient(135deg, var(--btn-gradient-start), var(--accent-red)); 
+    color: #FFFFFF; 
+    padding: 20px 30px; 
+    border-radius: 24px; 
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3); 
+    font-weight: 800; 
+    font-size: 16px; 
+    opacity: 0; 
+    visibility: hidden;
+    z-index: 10000; 
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); 
+    text-align: center; 
+    border: 1px solid rgba(255,255,255,0.2); 
+    display: flex; 
+    flex-direction: column;
+    align-items: center; 
+    gap: 12px; 
+    white-space: nowrap; 
+}
+.notification-show {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translate(-50%, -50%) scale(1) !important; 
+}
+#taskNotification i { color: #FFFFFF; width: 32px; height: 32px; }
+
+/* REKLAM KARTININ İÇİNDƏKİ YUXARI BİLDİRİŞ */
+#adRewardNotificationContainer { 
+    position: absolute; 
+    top: 15px; 
+    left: 50%; 
+    transform: translateX(-50%); 
+    z-index: 10; 
+    pointer-events: none;
+    width: max-content;
+}
+.reward-msg {
+    background: linear-gradient(135deg, var(--btn-gradient-start), var(--accent-red)); 
+    color: #FFFFFF; 
+    padding: 12px 20px; 
+    border-radius: 16px; 
+    box-shadow: 0 10px 25px rgba(239, 68, 68, 0.3); 
+    font-weight: 800; 
+    font-size: 14px; 
+    opacity: 0; 
+    transform: translateY(-15px); 
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); 
+    border: 1px solid rgba(255,255,255,0.2); 
+    white-space: nowrap; 
+}
+.reward-msg.show { 
+    opacity: 1; 
+    transform: translateY(0); 
+}
+
+/* MODAL STİLLƏRİ */
+.modal-overlay-daily {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.8); backdrop-filter: blur(10px);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 100000; opacity: 0; visibility: hidden; transition: all 0.4s;
+}
+.modal-overlay-daily { background: rgba(2, 44, 34, 0.85); backdrop-filter: blur(12px); transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+.modal-overlay-daily.show { opacity: 1; visibility: visible; }
+
+.daily-modal-content {
+    background: linear-gradient(135deg, var(--card-bg), var(--input-bg));
+    width: 90%; max-width: 340px; border-radius: 32px; padding: 40px 25px; text-align: center;
+    transform: translateY(30px) scale(0.9); opacity: 0; transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    border: 2px solid rgba(16, 185, 129, 0.5);
+    box-shadow: 0 25px 60px rgba(16, 185, 129, 0.25), inset 0 0 20px rgba(16, 185, 129, 0.1);
+    position: relative; overflow: hidden;
+}
+.modal-overlay-daily.show .daily-modal-content { transform: translateY(0) scale(1); opacity: 1; }
+.daily-icon-wrapper {
+    width: 90px; height: 90px; margin: 0 auto 20px;
+    background: linear-gradient(135deg, #34D399, #10B981);
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size: 45px; box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4);
+    animation: bounceDaily 2s infinite;
+}
+@keyframes bounceDaily { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+.daily-modal-title { font-size: 24px; font-weight: 900; color: var(--text-dark); margin-bottom: 12px; }
+.daily-modal-desc { font-size: 15px; color: var(--text-muted); font-weight: 600; line-height: 1.5; margin-bottom: 25px; }
+.daily-btn {
+    width: 100%; padding: 18px; border: none; border-radius: 20px; font-weight: 900; font-size: 17px;
+    background: linear-gradient(135deg, #10B981, #047857); color: white; cursor: pointer;
+    box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4); transition: transform 0.2s;
+}
+.daily-btn:active { transform: scale(0.95); }
+.daily-sunburst {
+    position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+    background: repeating-conic-gradient(from 0deg, rgba(16, 185, 129, 0.05) 0deg 15deg, transparent 15deg 30deg);
+    animation: rotateSunburst 20s linear infinite; z-index: -1; pointer-events: none;
+}
+body.dark-theme .daily-sunburst { background: repeating-conic-gradient(from 0deg, rgba(16, 185, 129, 0.1) 0deg 15deg, transparent 15deg 30deg); }
+@keyframes rotateSunburst { 100% { transform: rotate(360deg); } }
+</style>
+</head>
+<body id="body">
+
+<script>
+function safeGet(k,d=0){try{return JSON.parse(localStorage.getItem(k))??d;}catch{return d;}}
+function safeSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+
+let tgUser = null;
+let userRefId = null;
+
+if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe && window.Telegram.WebApp.initDataUnsafe.user) {
+    tgUser = window.Telegram.WebApp.initDataUnsafe.user;
+    userRefId = tgUser.id.toString();
+} else {
+    userRefId = localStorage.getItem('guest_ref_id_manataz');
+    if (!userRefId) {
+        userRefId = Math.floor(1000000000 + Math.random() * 9000000000).toString();
+        localStorage.setItem('guest_ref_id_manataz', userRefId);
+    }
+}
+
+const THEME_KEY = 'theme_manataz_' + userRefId;
+const LANG_KEY = 'lang_manataz_' + userRefId;
+
+const savedTheme = safeGet(THEME_KEY, 'light'); 
+if(savedTheme === 'dark') { document.getElementById('body').classList.add('dark-theme'); } 
+else { document.getElementById('body').classList.remove('dark-theme'); }
+
+let currentLang = safeGet(LANG_KEY, 'az'); 
+if(currentLang !== 'az' && currentLang !== 'tr') currentLang = 'az';
+</script>
+
+<div id="loadingScreen" oncontextmenu="return false;">
+  <img src="https://i.postimg.cc/1zxbWcBM/file-000000006e788210854444bfe2a4e2de.png" alt="Manat Az Logo" class="loading-image-logo" draggable="false">
+  <div class="loading-text"><span id="loadingTextNode">Yüklənir</span><span class="loading-dots"></span></div>
+</div>
+
+<script>
+document.getElementById('loadingTextNode').textContent = currentLang === 'tr' ? 'Yükleniyor' : 'Yüklənir';
+</script>
+
+<div id="celebrationModal" class="modal-overlay-daily">
+    <div class="daily-modal-content" style="border-color: #10B981; box-shadow: 0 25px 60px rgba(16, 185, 129, 0.25), inset 0 0 20px rgba(16, 185, 129, 0.1);">
+        <div class="daily-sunburst" style="background: repeating-conic-gradient(from 0deg, rgba(16, 185, 129, 0.05) 0deg 15deg, transparent 15deg 30deg);"></div>
+        <div class="daily-icon-wrapper" style="background: linear-gradient(135deg, #34D399, #10B981); box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4);">🎉</div>
+        <div class="daily-modal-title" data-i18n="cel_title">🎉 İcma Böyüyür!</div>
+        <div class="daily-modal-desc" data-i18n="cel_desc">Mükəmməl xəbərimiz var! Manat Az rəsmi kanalımız 100 istifadəçiyə çatdı! Bu münasibətlə sənə <b>0.50 ₼</b> hədiyyə edirik!</div>
+        <button id="claimCelebrationBtn" class="daily-btn" style="background: linear-gradient(135deg, #10B981, #059669); box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);" data-i18n="cel_btn">Mükafatı Al</button>
+    </div>
+</div>
+
+<div id="dailyBonusModal" class="modal-overlay-daily">
+    <div class="daily-modal-content">
+        <div class="daily-sunburst"></div>
+        <div class="daily-icon-wrapper">💸</div>
+        <div class="daily-modal-title" data-i18n="daily_bonus_title">Gündəlik Giriş Mükafatı</div>
+        <div class="daily-modal-desc" data-i18n="daily_bonus_desc">Hər gün tətbiqə daxil ol və <b>0.05 ₼</b> qazan!</div>
+        <button id="claimDailyBtn" class="daily-btn" data-i18n="claim_bonus">Mükafatı Al</button>
+    </div>
+</div>
+
+<div id="taskNotification">
+    <i data-lucide="check-circle-2"></i>
+    <span id="taskNotificationText"></span>
+</div>
+
+<div class="container">
+  <div id="settingsPage" class="page">
+    <div class="profile-card">
+        <h2 style="font-weight:900; margin-bottom:25px; color: var(--text-dark); text-align: left; font-size: 22px;" data-i18n="settings">Ayarlar</h2>
+        
+        <div class="setting-item-row">
+            <div class="setting-info-col">
+                <div class="setting-icon-col"><i data-lucide="globe"></i></div>
+                <span data-i18n="lang">Dil</span>
+            </div>
+            <div class="lang-switch">
+                <button id="btnLangAZ" onclick="setLang('az')">AZ</button>
+                <button id="btnLangTR" onclick="setLang('tr')">TR</button>
+            </div>
+        </div>
+
+        <div class="setting-item-row">
+            <div class="setting-info-col">
+                <div class="setting-icon-col"><i data-lucide="palette"></i></div>
+                <span data-i18n="theme">Tema</span>
+            </div>
+            <div class="toggle-switch" onclick="toggleTheme()">
+                <div class="toggle-thumb" id="themeThumb"><i data-lucide="moon"></i></div>
+            </div>
+        </div>
+
+        <h3 style="font-weight:900; margin: 35px 0 15px; color: var(--text-dark); text-align: left; font-size: 18px;" data-i18n="invite">Dostlarını Dəvət Et</h3>
+        
+        <div style="display:flex; flex-direction:column; gap:12px;">
+            <button class="modal-btn-action copy-btn" onclick="copyRefLink()">
+                <i data-lucide="copy" style="color: var(--accent);"></i> <span data-i18n="copy">Linki Kopyala</span>
+            </button>
+            <button class="modal-btn-action whatsapp-btn" onclick="shareWhatsApp()">
+                <i data-lucide="message-square"></i> <span data-i18n="wp">WhatsApp ilə Paylaş</span>
+            </button>
+            <button class="modal-btn-action telegram-btn" onclick="shareAppAction()">
+                <i data-lucide="send"></i> <span data-i18n="tg">Telegram ilə Paylaş</span>
+            </button>
+        </div>
+    </div>
+  </div>
+
+  <div id="tasksPage" class="page">
+    <div class="balance-card">
+      <h3 data-i18n="balance">Balansınız</h3>
+      <div class="balances-wrapper">
+         <div class="amount-wrap">
+             <div class="amount"><span class="bal-val">0.000</span></div>
+             <div class="currency bal-symbol">₼</div>
+         </div>
+      </div>
+    </div>
+
+    <div class="task-list">
+        <div class="task-item">
+            <div class="task-header">
+                <div class="task-title">
+                    <div class="task-icon"><i data-lucide="send" style="width:22px;height:22px;"></i></div>
+                    <span data-i18n="task1_title">Kanala Qoşul</span>
+                </div>
+                <div class="task-reward-badge" id="taskJoinRewardBadge">0.10 ₼</div>
+            </div>
+            <div class="task-desc" data-i18n="task1_desc">Rəsmi Manat Az kanalına qoşul və qazan!</div>
+            <button id="joinAppBtn" class="task-btn action">
+                <i data-lucide="external-link" style="width:20px;height:20px;"></i>
+                <span data-i18n="task1_title">Kanala Qoşul</span>
+            </button>
+        </div>
+    </div>
+  </div>
+
+  <div id="adsPage" class="page active">
+    <div class="balance-card">
+      <h3 data-i18n="balance">Balansınız</h3>
+      <div class="balances-wrapper">
+         <div class="amount-wrap">
+             <div class="amount"><span class="bal-val">0.000</span></div>
+             <div class="currency bal-symbol">₼</div>
+         </div>
+      </div>
+    </div>
+    
+    <div class="ad-card"> 
+      <div id="adRewardNotificationContainer"></div>
+
+      <h2 data-i18n="ads_title">Gündəlik Reklamlar</h2>
+      <p id="adRewardText" data-i18n="ads_desc">Hər reklam üçün <b class="reward-text-b">0.002 ₼</b> qazanın</p>
+      
+      <div class="stats">
+        <div class="stat"><span id="adsCount">0</span><label data-i18n="watched">İzlənən</label></div>
+        <div class="stat"><span>50</span><label data-i18n="max">Maksimum</label></div>
+      </div>
+      
+      <div class="progress"><div class="progress-fill" id="progress"></div></div>
+      <p style="margin-top:15px; font-weight:800; color: var(--text-dark); font-size: 15px;"><span data-i18n="progress">İrəliləyiş</span>: <span id="progressTextSpan" style="color: var(--accent);">0/50</span></p>
+      
+      <button id="adBtn" class="ad-btn">
+        <span class="ad-btn-content">
+          <i data-lucide="play" style="width: 22px; height: 22px; fill: white;"></i>
+          <span data-i18n="watch_ad">Reklam İzlə</span>
+        </span>
+      </button>
+      <div id="msg"></div> 
+    </div>
+  </div>
+  
+  <div id="walletPage" class="page">
+    <div class="balance-card">
+      <h3 data-i18n="balance">Balansınız</h3>
+      <div class="balances-wrapper">
+         <div class="amount-wrap">
+             <div class="amount"><span class="bal-val">0.000</span></div>
+             <div class="currency bal-symbol">₼</div>
+         </div>
+      </div>
+    </div>
+    
+    <div id="methodsContainer">
+        <h2 style="text-align:center;margin-bottom:10px;color:var(--text-dark);font-weight:900; font-size:24px;" data-i18n="withdraw_method">Çıxarış Üsulu</h2>
+        <p style="text-align:center; color:var(--text-muted); font-size: 15px; font-weight: 600; margin-bottom: 30px;" data-i18n="where_to_receive">Ödənişi hara almaq istəyirsiniz?</p>
+        
+        <div class="method-list" id="methods"></div>
+    </div>
+
+    <div id="form">
+      <button id="backBtn" class="back-btn-ui">
+        <i data-lucide="arrow-left" style="width:20px;height:20px;"></i>
+        <span data-i18n="back">Geri Qayıt</span>
+      </button>
+      
+      <h3 style="margin-bottom: 20px; font-weight: 900; color: var(--text-dark); font-size: 22px;" data-i18n="enter_info">Məlumatları daxil et</h3>
+      
+      <div id="networkWrapper" style="display:none; margin-bottom: 20px;">
+          <p style="font-weight: 800; margin-bottom: 10px; color: var(--text-dark);" data-i18n="choose_network">Ağı seçin</p>
+          <div style="display: flex; gap: 10px;">
+              <button type="button" class="network-btn" data-net="bep20">BEP20</button>
+              <button type="button" class="network-btn" data-net="ton">TON</button>
+          </div>
+      </div>
+
+      <input id="details" type="text" inputmode="numeric" placeholder="">
+      <input id="amount" type="number" step="0.001" placeholder="Məbləğ">
+      
+      <div id="feeCalcBox" class="fee-calc-box">
+          <span data-i18n="fee">Şəbəkə haqqı (5%):</span> <span id="feeAmount">0.00</span> <span class="feeCalcSymbol">₼</span><br><br>
+          <span style="font-size: 16px;"><span data-i18n="final_amount">Yekun məbləğ:</span> <span id="receiveAmount" style="color: var(--accent);">0.00</span> <span class="feeCalcSymbol">₼</span></span>
+      </div>
+
+      <button id="withdrawBtn">
+        <i data-lucide="credit-card"></i>
+        <span data-i18n="confirm_withdraw">Təsdiqlə və Çıxar</span>
+      </button>
+      <div id="alert" class="alert"></div>
+    </div>
+
+    <div class="history-card" id="historyCard">
+        <h3 class="history-title" data-i18n="withdraw_history">Çıxarış Tarixçəsi</h3>
+        <div class="history-list" id="historyList"></div>
+    </div>
+  </div>
+
+  <div id="profilePage" class="page">
+    <div class="profile-card" id="profileMainView">
+        <div class="profile-header-wrap">
+            <div class="profile-avatar">
+                <i data-lucide="user" class="default-icon"></i>
+                <img id="profileImage" src="" alt="Profile" draggable="false">
+            </div>
+            <div>
+                <div class="profile-name" id="displayUsername">İstifadəçi</div>
+                <div class="profile-id">ID: <span id="displayUserId"></span></div>
+            </div>
+        </div>
+
+        <h3 style="text-align: left; font-size: 18px; font-weight: 900; margin-bottom: 15px; color: var(--text-dark);" data-i18n="stats">Statistika</h3>
+        <div class="profile-stats-grid">
+            <div class="profile-stat-box">
+                <i data-lucide="eye" style="color: var(--accent);"></i>
+                <div class="profile-stat-val" id="statTotalAds">0</div>
+                <div class="profile-stat-lbl" data-i18n="stat_ads">Reklam İzləndi</div>
+            </div>
+            <div class="profile-stat-box">
+                <i data-lucide="check-circle" style="color: #10B981;"></i>
+                <div class="profile-stat-val" id="statTotalTasks">0</div>
+                <div class="profile-stat-lbl" data-i18n="stat_tasks">Tapşırıq Edildi</div>
+            </div>
+            <div class="profile-stat-box" style="grid-column: span 2; background: linear-gradient(135deg, var(--input-bg), var(--card-bg)); border-color: var(--accent);">
+                <i data-lucide="coins" style="color: #10B981; width: 30px; height: 30px; margin-bottom: 15px;"></i>
+                <div class="profile-stat-val" id="statTotalAdEarn" style="color: var(--accent); font-size: 32px;">0.000 ₼</div>
+                <div class="profile-stat-lbl" data-i18n="stat_earn">Ümumi Reklam Qazancı</div>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+<div class="menu">
+  <button onclick="showPage('settingsPage',this)" data-page-id="settingsPage">
+    <i data-lucide="settings" class="nav-icon"></i>
+    <span class="nav-text" data-i18n="settings">Ayarlar</span>
+  </button>
+  <button onclick="showPage('tasksPage',this)" data-page-id="tasksPage">
+    <i data-lucide="layout-list" class="nav-icon"></i>
+    <span class="nav-text" data-i18n="tasks">Tapşırıqlar</span>
+  </button>
+  <button onclick="showPage('adsPage',this)" class="active" data-page-id="adsPage">
+    <i data-lucide="house" class="nav-icon"></i>
+    <span class="nav-text">Manat Az</span>
+  </button>
+  <button onclick="showPage('walletPage',this)" data-page-id="walletPage">
+    <i data-lucide="wallet" class="nav-icon"></i>
+    <span class="nav-text" data-i18n="wallet">Cüzdan</span>
+  </button>
+  <button onclick="showPage('profilePage',this)" data-page-id="profilePage">
+    <i data-lucide="user" class="nav-icon"></i>
+    <span class="nav-text" data-i18n="profile">Profil</span>
+  </button>
+</div>
+
+<script>
+lucide.createIcons();
+
+const i18n = {
+    az: {
+        loading: "Yüklənir",
+        settings: "Ayarlar",
+        theme: "Tema",
+        lang: "Dil",
+        invite: "Dostlarını Dəvət Et",
+        copy: "Linki Kopyala",
+        wp: "WhatsApp ilə Paylaş",
+        tg: "Telegram ilə Paylaş",
+        balance: "Balansınız",
+        
+        cel_title: "🎉 İcma Böyüyür!",
+        cel_desc: "Mükəmməl xəbərimiz var! Manat Az rəsmi kanalımız 100 istifadəçiyə çatdı! Bu münasibətlə sənə <b>0.50 ₼</b> hədiyyə edirik!",
+        cel_btn: "Mükafatı Al",
+        cel_claimed_msg: "🎉 0.50 ₼ balansınıza əlavə edildi!",
+        
+        daily_bonus_title: "Gündəlik Giriş Mükafatı",
+        daily_bonus_desc: "Hər gün tətbiqə daxil ol və <b>0.05 ₼</b> qazan!",
+        claim_bonus: "Mükafatı Al",
+        bonus_claimed_msg: "🎉 0.05 ₼ balansınıza əlavə edildi!",
+        tasks: "Tapşırıqlar",
+        
+        task1_title: "Kanala Qoşul",
+        task1_desc: "Rəsmi Manat Az kanalına qoşul və qazan!",
+        ads_title: "Gündəlik Reklamlar",
+        ads_desc: "Hər reklam üçün <b class='reward-text-b'>0.002 ₼</b> qazanın",
+        watched: "İzlənən",
+        max: "Maksimum",
+        progress: "İrəliləyiş",
+        watch_ad: "Reklam İzlə",
+        watching: "Gözlənilir...",
+        watching_ad: "İzlənir...",
+        limit_reached: "Limit Doldu",
+        wallet: "Cüzdan",
+        withdraw_method: "Çıxarış Üsulu",
+        where_to_receive: "Ödənişi hara almaq istəyirsiniz?",
+        min_withdraw: "Min",
+        back: "Geri Qayıt",
+        enter_info: "Məlumatları daxil et",
+        choose_network: "Ağı seçin",
+        fee: "Şəbəkə haqqı (5%):",
+        final_amount: "Yekun məbləğ:",
+        confirm_withdraw: "Təsdiqlə və Çıxar",
+        withdraw_history: "Çıxarış Tarixçəsi",
+        history_empty: "Keçmiş boşdur",
+        status_pending: "Gözləyir",
+        profile: "Profil",
+        stats: "Statistika",
+        stat_ads: "Reklam İzləndi",
+        stat_tasks: "Tapşırıq Edildi",
+        stat_earn: "Ümumi Reklam Qazancı",
+        msg_limit: "📣 Günlük limitə çatdınız!",
+        msg_copied: "✅ Referal linki kopyalandı!",
+        msg_copy_err: "❌ Kopyalama xətası!",
+        err_method: "Çıxarış üsulunu seçin",
+        err_network: "Zəhmət olmasa ağ seçin",
+        err_bank: "Kart nömrəsi tam 16 rəqəm olmalıdır",
+        err_phone: "Nömrə tam 10 rəqəm olmalıdır",
+        err_usdt: "Adres düzgün deyil",
+        err_amount: "Düzgün məbləğ daxil edin",
+        err_min: "Minimum çıxarış",
+        err_bal: "Balansınızda kifayət qədər vəsait yoxdur",
+        success_withdraw: "Çıxarış tələbi göndərildi!",
+        completed: "Tamamlandı",
+        checking: "Yoxlanılır...",
+        task_success: "✅ Tapşırıq uğurlu! <b>{reward}</b> qazandınız.",
+        ad_reward_text: "🎉 <b>{reward}</b> qazandınız!",
+        share_text: `🔥 Pul qazanmaq heç bu qədər rahat olmamışdı Manat Az ilə hər şey sənin nəzarətində!\n\n💡 Sadəcə bir neçə saniyəlik reklamları izləyərək balansını artır. Heç bir çətinlik yoxdur telefonun kifayətdir.\n\n👇 İndi qoşul və ilk qazancını əldə et:\n{link}\n\n📲 Gün ərzində istədiyin vaxt daxil ol, reklam izlə və qazancını yığ. 💸 Topladığın məbləği rahat şəkildə çıxara bilərsən.\n\n⚡ Gözləmə Manat Az ilə qazancını bu gündən başlat!`
+    },
+    tr: {
+        loading: "Yükleniyor",
+        settings: "Ayarlar",
+        theme: "Tema",
+        lang: "Dil",
+        invite: "Arkadaşlarını Davet Et",
+        copy: "Bağlantıyı Kopyala",
+        wp: "WhatsApp ile Paylaş",
+        tg: "Telegram ile Paylaş",
+        balance: "Bakiyeniz",
+        
+        cel_title: "🎉 Topluluk Büyüyor!",
+        cel_desc: "Harika bir haberimiz var! Resmi Manat Az kanalımız 100 kullanıcıya ulaştı! Bu özel günde sana <b>0.50 ₼</b> değerinde hediye ediyoruz!",
+        cel_btn: "Ödülü Al",
+        cel_claimed_msg: "🎉 0.50 ₼ bakiyenize eklendi!",
+        
+        daily_bonus_title: "Günlük Giriş Ödülü",
+        daily_bonus_desc: "Her gün uygulamaya gir ve <b>0.05 ₼</b> kazan!",
+        claim_bonus: "Ödülü Al",
+        bonus_claimed_msg: "🎉 0.05 ₼ bakiyenize eklendi!",
+        tasks: "Görevler",
+        
+        task1_title: "Kanala Katıl",
+        task1_desc: "Resmi Manat Az kanalına katıl ve kazan!",
+        ads_title: "Günlük Reklamlar",
+        ads_desc: "Her reklam için <b class='reward-text-b'>0.0528 TL</b> kazanın",
+        watched: "İzlenen",
+        max: "Maksimum",
+        progress: "İlerleme",
+        watch_ad: "Reklam İzle",
+        watching: "Bekleniyor...",
+        watching_ad: "İzleniyor...",
+        limit_reached: "Limit Doldu",
+        wallet: "Cüzdan",
+        withdraw_method: "Çekim Yöntemi",
+        where_to_receive: "Ödemeyi nereye almak istiyorsunuz?",
+        min_withdraw: "Min",
+        back: "Geri Dön",
+        enter_info: "Bilgileri girin",
+        choose_network: "Ağı seçin",
+        fee: "Ağ ücreti (5%):",
+        final_amount: "Son miktar:",
+        confirm_withdraw: "Onayla ve Çek",
+        withdraw_history: "Çekim Geçmişi",
+        history_empty: "Geçmiş boş",
+        status_pending: "Bekliyor",
+        profile: "Profil",
+        stats: "İstatistikler",
+        stat_ads: "Reklam İzlendi",
+        stat_tasks: "Görev Yapıldı",
+        stat_earn: "Toplam Reklam Kazancı",
+        msg_limit: "📣 Günlük limite ulaştınız!",
+        msg_copied: "✅ Referans bağlantısı kopyalandı!",
+        msg_copy_err: "❌ Kopyalama hatası!",
+        err_method: "Çekim yöntemini seçin",
+        err_network: "Lütfen ağ seçin",
+        err_bank: "Kart numarası tam 16 rakam olmalıdır",
+        err_phone: "Numara tam 10 rakam olmalıdır",
+        err_usdt: "Adres geçersiz",
+        err_amount: "Geçerli bir miktar girin",
+        err_min: "Minimum çekim",
+        err_bal: "Yetersiz Bakiye",
+        success_withdraw: "Çekim talebi gönderildi!",
+        completed: "Tamamlandı",
+        checking: "Kontrol ediliyor...",
+        task_success: "✅ Görev başarılı! <b>{reward}</b> kazandınız.",
+        ad_reward_text: "🎉 <b>{reward}</b> kazandınız!",
+        share_text: `🔥 Para kazanmak hiç bu kadar kolay olmamıştı Manat Az ile her şey senin kontrolünde!\n\n💡 Sadece birkaç saniyelik reklamları izleyerek bakiyeni artır. Hiçbir zorluk yok telefonun yeterli.\n\n👇 Şimdi katıl ve ilk kazancını elde et:\n{link}\n\n📲 Gün içinde istediğin zaman gir, reklam izle ve kazancını topla. 💸 Topladığın tutarı rahatça çekebilirsin.\n\n⚡ Bekleme Manat Az ile kazancını bugünden başlat!`
+    }
+};
+
+let adManager = null;
+if (window.Adsgram) {
+    adManager = window.Adsgram.init({ blockId: "int-28369" });
+}
+
+function safeRemove(k){try{localStorage.removeItem(k);}catch(e){}}
+
+const body = document.getElementById('body');
+const themeThumb = document.getElementById('themeThumb');
+
+function applyTheme(isDark) {
+    if (isDark) {
+        body.classList.add('dark-theme');
+        if(themeThumb) themeThumb.innerHTML = '<i data-lucide="moon" style="width:14px;height:14px;"></i>'; 
+        safeSet(THEME_KEY, 'dark');
+        try {
+            if(window.Telegram?.WebApp?.setHeaderColor) window.Telegram.WebApp.setHeaderColor('#022C22');
+            if(window.Telegram?.WebApp?.setBackgroundColor) window.Telegram.WebApp.setBackgroundColor('#022C22');
+        } catch(e){}
+    } else {
+        body.classList.remove('dark-theme');
+        if(themeThumb) themeThumb.innerHTML = '<i data-lucide="sun" style="width:14px;height:14px;"></i>'; 
+        safeSet(THEME_KEY, 'light');
+        try {
+            if(window.Telegram?.WebApp?.setHeaderColor) window.Telegram.WebApp.setHeaderColor('#F0FDF4');
+            if(window.Telegram?.WebApp?.setBackgroundColor) window.Telegram.WebApp.setBackgroundColor('#F0FDF4');
+        } catch(e){}
+    }
+    lucide.createIcons(); 
+}
+function toggleTheme() {
+    const isDark = body.classList.contains('dark-theme');
+    applyTheme(!isDark);
+}
+
+applyTheme(safeGet(THEME_KEY, 'light') === 'dark');
+
+const USERNAME_KEY = `user_profile_name_manataz_${userRefId}`;
+const PROFILE_PIC_KEY = `user_profile_pic_manataz_${userRefId}`;
+
+if (tgUser) {
+    let fullName = tgUser.first_name;
+    if (tgUser.last_name) { fullName += " " + tgUser.last_name; }
+    localStorage.setItem(USERNAME_KEY, fullName);
+    if (tgUser.photo_url) { localStorage.setItem(PROFILE_PIC_KEY, tgUser.photo_url); }
+}
+
+const userRefLink = `https://t.me/manatazbot?startapp=${userRefId}`;
+
+function fC(val_azn, forceNumberOnly = false) {
+    if(currentLang === 'tr') {
+        let v = (parseFloat(val_azn) * 26.4).toFixed(4).replace(/\.?0+$/, '');
+        return forceNumberOnly ? v : v + ' TL';
+    }
+    let v2 = parseFloat(val_azn).toFixed(3);
+    return forceNumberOnly ? v2 : v2 + ' ₼';
+}
+
+const allMethods = [
+    { type: 'm10', name: 'M10', logo: 'https://i.postimg.cc/Kj94hVNG/unnamed.png' },
+    { type: 'bank', name: 'Bank Kartı', logo: 'https://i.postimg.cc/L6H0yWwZ/42492-bank-1024.png' },
+    { type: 'nar', name: 'Nar', logo: 'https://i.postimg.cc/4NmxhWPy/images.png' },
+    { type: 'azercell', name: 'Azercell', logo: 'https://i.postimg.cc/qM5gmPqZ/applogo512.png' },
+    { type: 'bakcell', name: 'Bakcell', logo: 'https://i.postimg.cc/Pqmx5N49/images.jpg' },
+    { type: 'usdt', name: 'USDT', logo: 'https://i.postimg.cc/8kmSsGyz/XTVCUSDT-600-(1).png' }
+];
+
+let type = '';
+let methodName = '';
+let selectedNetwork = '';
+
+function renderMethodsList() {
+    const list = document.getElementById('methods');
+    list.innerHTML = '';
+    
+    let methodsToShow = currentLang === 'tr' ? [allMethods[5]] : allMethods;
+    
+    methodsToShow.forEach(m => {
+        const minText = currentLang === 'tr' ? 'Min: 132 TL' : 'Min: 5 ₼';
+        const dName = (currentLang === 'tr' && m.type === 'bank') ? 'Banka Kartı' : m.name; 
+        
+        list.innerHTML += `
+        <div class="method" data-type="${m.type}" data-name="${dName}">
+          <img src="${m.logo}" alt="${dName}" class="method-logo" draggable="false">
+          <span class="method-text">${dName}</span>
+          <span class="min-withdraw-label">${minText}</span>
+        </div>`;
+    });
+    
+    bindMethodClicks();
+}
+
+function updateTexts() {
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if(i18n[currentLang][key]) {
+            el.innerHTML = i18n[currentLang][key];
+        }
+    });
+
+    const loadTextNode = document.getElementById('loadingTextNode');
+    if (loadTextNode) loadTextNode.textContent = i18n[currentLang].loading;
+
+    document.getElementById('btnLangAZ').classList.toggle('active', currentLang === 'az');
+    document.getElementById('btnLangTR').classList.toggle('active', currentLang === 'tr');
+
+    document.getElementById('taskJoinRewardBadge').textContent = fC(TASK_APP_REWARD);
+    
+    document.querySelectorAll('.bal-symbol').forEach(el => el.textContent = currentLang === 'tr' ? 'TL' : '₼');
+    document.querySelectorAll('.feeCalcSymbol').forEach(el => el.textContent = currentLang === 'tr' ? 'TL' : '₼');
+    
+    const amtInput = document.getElementById('amount');
+    if (amtInput) {
+        amtInput.placeholder = currentLang === 'tr' ? 'Miktar (Min 132 TL)' : 'Məbləğ (Min 5 ₼)';
+    }
+
+    renderMethodsList();
+    renderHistory();
+    updateStatsUI();
+}
+
+function setLang(lang) {
+    if(currentLang === lang) return;
+    currentLang = lang;
+    safeSet(LANG_KEY, lang);
+    
+    document.getElementById('form').style.display = 'none';
+    document.getElementById('methodsContainer').style.display = 'block';
+    document.getElementById('alert').style.display = 'none';
+    document.getElementById('feeCalcBox').style.display = 'none';
+    type = '';
+    selectedNetwork = '';
+    document.getElementById('details').value = '';
+    document.getElementById('amount').value = '';
+    
+    updateTexts();
+    update();
+}
+
+let serverTimeAtLoad = 0;
+let localTimeAtLoad = 0;
+let timeSynced = false;
+
+async function syncServerTime() {
+    const apis = [
+        async () => { const r = await fetch('https://worldtimeapi.org/api/timezone/Etc/UTC'); const d = await r.json(); return d.unixtime * 1000; },
+        async () => { const r = await fetch('https://yandex.com/time/sync.json?geo=213'); const d = await r.json(); return d.time; }, 
+        async () => { const r = await fetch('https://timeapi.io/api/Time/current/zone?timeZone=Etc/UTC'); const d = await r.json(); return new Date(d.dateTime + "Z").getTime(); }
+    ];
+
+    try {
+        const validTimes = await Promise.any(apis.map(api => api().then(t => {
+            if (!t || isNaN(t) || t < 1700000000000) throw new Error('Yalnış Saat Formatı');
+            return t;
+        })));
+        
+        serverTimeAtLoad = validTimes;
+        localTimeAtLoad = performance.now(); 
+        timeSynced = true;
+    } catch (error) {
+        timeSynced = false;
+    }
+}
+
+function getTrueTime() {
+    if (timeSynced) { return serverTimeAtLoad + (performance.now() - localTimeAtLoad); }
+    return Date.now(); 
+}
+
+function getMoscowDateStr(timeMs) {
+    try {
+        return new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Moscow', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date(timeMs));
+    } catch(e) {
+        let d = new Date(timeMs);
+        let utc = d.getTime() + (d.getTimezoneOffset() * 60000);
+        let moscowTime = new Date(utc + (3600000 * 3));
+        return moscowTime.getDate() + '/' + (moscowTime.getMonth()+1) + '/' + moscowTime.getFullYear();
+    }
+}
+
+const BAL_KEY = `bal_manataz_${userRefId}`;
+const COUNT_KEY = `cnt_manataz_${userRefId}`;
+
+const LAST_RESET_DATE_KEY = `last_date_manataz_${userRefId}`;
+const DAILY_CLAIM_DATE_KEY = `daily_claim_date_manataz_${userRefId}`;
+const CELEBRATION_100_CLAIMED_KEY = `cel_100_manataz_${userRefId}`; 
+
+const JOIN_APP_KEY = `joined_manataz_app_${userRefId}`;
+const REWARD_MSG_KEY = `rewardMsgExpire_manataz_${userRefId}`;
+const HISTORY_KEY = `withdraw_history_manataz_${userRefId}`;
+
+const TOTAL_ADS_KEY = `tot_ads_manataz_${userRefId}`;
+const TOTAL_TASKS_KEY = `tot_tasks_manataz_${userRefId}`;
+const TOTAL_AD_EARN_KEY = `tot_ad_earn_manataz_${userRefId}`;
+
+const REWARD_PER_AD = 0.002;
+const MAX_ADS_PER_DAY = 50;
+const TASK_APP_REWARD = 0.10;
+const MIN_WITHDRAW = 5;
+const FEE_PERCENT = 0.05;
+
+let withdrawHistory = safeGet(HISTORY_KEY, []);
+let totalAdsAllTime = parseInt(safeGet(TOTAL_ADS_KEY, 0));
+let totalTasksAllTime = parseInt(safeGet(TOTAL_TASKS_KEY, 0));
+let totalAdEarnAllTime = parseFloat(safeGet(TOTAL_AD_EARN_KEY, 0.00));
+
+let bal = parseFloat(safeGet(BAL_KEY, 0.00)); 
+let cnt = parseInt(safeGet(COUNT_KEY, 0));
+
+let rewardMsgTimeout = null; 
+let isAdRunning = false; 
+
+function checkDailyReset() {
+    let currentMoscowDate = getMoscowDateStr(getTrueTime());
+    let lastSavedDate = localStorage.getItem(LAST_RESET_DATE_KEY);
+
+    if (lastSavedDate !== currentMoscowDate) {
+        cnt = 0; 
+        safeSet(COUNT_KEY, cnt);
+        localStorage.setItem(LAST_RESET_DATE_KEY, currentMoscowDate); 
+    }
+}
+
+function loadProfilePic() {
+    const pic = localStorage.getItem(PROFILE_PIC_KEY);
+    const avatar = document.querySelector('.profile-avatar');
+    const img = document.getElementById('profileImage');
+    if (pic) {
+        img.src = pic;
+        avatar.classList.add('has-image');
+    } else {
+        avatar.classList.remove('has-image');
+    }
+}
+
+function loadProfile() {
+    const savedName = localStorage.getItem(USERNAME_KEY);
+    const displayEl = document.getElementById('displayUsername');
+    if (savedName) {
+        displayEl.textContent = savedName;
+    } else {
+        displayEl.textContent = 'İstifadəçi';
+    }
+    document.getElementById('displayUserId').textContent = userRefId;
+    loadProfilePic();
+    updateStatsUI();
+}
+
+function updateStatsUI() {
+    document.getElementById('statTotalAds').textContent = totalAdsAllTime;
+    document.getElementById('statTotalTasks').textContent = totalTasksAllTime;
+    document.getElementById('statTotalAdEarn').textContent = fC(totalAdEarnAllTime);
+}
+
+function copyRefLink() {
+    const fallbackCopyTextToClipboard = (text) => {
+        var textArea = document.createElement("textarea");
+        textArea.value = text;
+        textArea.style.top = "0"; textArea.style.left = "0"; textArea.style.position = "fixed";
+        document.body.appendChild(textArea);
+        textArea.focus(); textArea.select();
+        try { document.execCommand('copy'); showTaskNotification(i18n[currentLang].msg_copied); } 
+        catch (err) { showTaskNotification(i18n[currentLang].msg_copy_err); }
+        document.body.removeChild(textArea);
+    };
+
+    if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(userRefLink).then(() => {
+            showTaskNotification(i18n[currentLang].msg_copied);
+        }).catch(() => { fallbackCopyTextToClipboard(userRefLink); });
+    } else {
+        fallbackCopyTextToClipboard(userRefLink);
+    }
+}
+
+function shareWhatsApp() {
+    const msg = i18n[currentLang].share_text.replace('{link}', userRefLink);
+    window.open('https://api.whatsapp.com/send?text=' + encodeURIComponent(msg), '_blank');
+}
+
+function shareAppAction() {
+    const msg = i18n[currentLang].share_text.replace('{link}', userRefLink);
+    window.open(`https://t.me/share/url?url=&text=${encodeURIComponent(msg)}`, '_blank');
+}
+
+function update(){
+  checkDailyReset();
+
+  const formattedBal = fC(bal, true);
+  document.querySelectorAll('.bal-val').forEach(el => el.textContent = formattedBal);
+  document.querySelectorAll('.reward-text-b').forEach(el => el.innerHTML = fC(REWARD_PER_AD));
+
+  document.getElementById('adsCount').textContent=cnt;
+  document.getElementById('progress').style.width=(cnt/MAX_ADS_PER_DAY*100)+'%';
+  const progressTextSpan = document.getElementById('progressTextSpan');
+  if(progressTextSpan) progressTextSpan.textContent = `${cnt}/${MAX_ADS_PER_DAY}`;
+
+  safeSet(BAL_KEY, bal); 
+  safeSet(COUNT_KEY, cnt); 
+  updateStatsUI();
+  
+  checkAndDisplayRewardMsg();
+  updateTaskButtons(); 
+  restoreAdBtnState();
+}
+
+document.getElementById('claimCelebrationBtn').addEventListener('click', () => {
+    if (!safeGet(CELEBRATION_100_CLAIMED_KEY, false)) {
+        bal += 0.50;
+        safeSet(BAL_KEY, bal);
+        
+        safeSet(CELEBRATION_100_CLAIMED_KEY, true);
+        document.getElementById('celebrationModal').classList.remove('show');
+        update();
+        showTaskNotification(i18n[currentLang].cel_claimed_msg);
+
+        let currentMoscowDate = getMoscowDateStr(getTrueTime());
+        let lastClaimDate = localStorage.getItem(DAILY_CLAIM_DATE_KEY);
+        if (lastClaimDate !== currentMoscowDate) {
+            setTimeout(() => {
+                document.getElementById('dailyBonusModal').classList.add('show');
+            }, 600);
+        }
+    }
+});
+
+document.getElementById('claimDailyBtn').addEventListener('click', () => {
+    let currentMoscowDate = getMoscowDateStr(getTrueTime());
+    let lastClaimDate = localStorage.getItem(DAILY_CLAIM_DATE_KEY);
+
+    if (lastClaimDate === currentMoscowDate) return; 
+    
+    bal += 0.05;
+    safeSet(BAL_KEY, bal);
+    localStorage.setItem(DAILY_CLAIM_DATE_KEY, currentMoscowDate);
+    
+    document.getElementById('dailyBonusModal').classList.remove('show');
+    update();
+    showTaskNotification(i18n[currentLang].bonus_claimed_msg);
+});
+
+function getLogoForType(t) {
+    let m = allMethods.find(x => x.type === t);
+    if(m) return m.logo;
+    return allMethods[0].logo;
+}
+
+function renderHistory() {
+    const list = document.getElementById('historyList');
+    list.innerHTML = '';
+    
+    if (withdrawHistory.length === 0) {
+        list.innerHTML = `<div class="history-empty">${i18n[currentLang].history_empty}</div>`;
+        return;
+    }
+    
+    const reversed = [...withdrawHistory].reverse();
+    reversed.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'history-item';
+        
+        const d = new Date(item.date);
+        const dateStr = d.toLocaleDateString() + ' ' + d.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        const logoSrc = getLogoForType(item.type);
+        
+        div.innerHTML = `
+            <div class="history-info">
+                <div class="history-method"><img src="${logoSrc}" alt="${item.methodName}" draggable="false"> ${item.methodName}</div>
+                <div class="history-date">${dateStr}</div>
+            </div>
+            <div class="history-status-wrap">
+                <div class="history-amount">${fC(item.amount)}</div>
+                <div class="history-status">${i18n[currentLang].status_pending}</div>
+            </div>
+        `;
+        list.appendChild(div);
+    });
+}
+
+function setupTaskBtn(btnId, storageKey, linkTextKey) {
+    const btn = document.getElementById(btnId);
+    if (!btn) return;
+    
+    if (localStorage.getItem(storageKey)){
+        btn.className = 'task-btn completed'; 
+        btn.innerHTML = `<i data-lucide="check-circle" style="width:20px;height:20px;"></i> ${i18n[currentLang].completed}`; 
+        btn.disabled = true; 
+        btn.style.background = '';
+        btn.style.boxShadow = '';
+    } else {
+        if (!btn.classList.contains('waiting')) {
+            btn.className = 'task-btn action'; 
+            btn.disabled = false; 
+            btn.innerHTML = `<i data-lucide="external-link" style="width:20px;height:20px;"></i> <span>${i18n[currentLang][linkTextKey]}</span>`;
+        }
+    }
+}
+
+function updateTaskButtons() {
+    setupTaskBtn('joinAppBtn', JOIN_APP_KEY, 'task1_title');
+    lucide.createIcons(); 
+}
+
+const adBtn = document.getElementById('adBtn'), msg = document.getElementById('msg');
+
+function displayRewardMsg(messageHTML) {
+    if (rewardMsgTimeout) { clearTimeout(rewardMsgTimeout); rewardMsgTimeout = null; }
+    const container = document.getElementById('adRewardNotificationContainer');
+    if (!container) return; 
+
+    let rewardMsgElement = document.getElementById('rewardMsg');
+    if (rewardMsgElement) { rewardMsgElement.innerHTML = messageHTML; } 
+    else {
+        rewardMsgElement = document.createElement('div');
+        rewardMsgElement.className = 'reward-msg'; rewardMsgElement.id = 'rewardMsg';
+        rewardMsgElement.innerHTML = messageHTML;
+        container.appendChild(rewardMsgElement);
+    }
+    rewardMsgElement.classList.remove('show');
+    safeSet(REWARD_MSG_KEY, { html: messageHTML, expire: Date.now() + 2500 }); 
+    setTimeout(() => { rewardMsgElement.classList.add('show'); }, 50);
+    rewardMsgTimeout = setTimeout(() => {
+        if (rewardMsgElement) {
+            rewardMsgElement.classList.remove('show');
+            setTimeout(() => { if(rewardMsgElement.parentNode === container) rewardMsgElement.remove(); }, 400); 
+        }
+        safeRemove(REWARD_MSG_KEY);
+        rewardMsgTimeout = null;
+    }, 2500);
+}
+
+function checkAndDisplayRewardMsg() {
+    const container = document.getElementById('adRewardNotificationContainer');
+    if (!container) return;
+    const currentPage = document.querySelector('.page.active');
+    if (!currentPage || currentPage.id !== 'adsPage') {
+        let rewardMsgElement = document.getElementById('rewardMsg');
+        if (rewardMsgElement) rewardMsgElement.classList.remove('show');
+        return;
+    }
+    const savedMsg = safeGet(REWARD_MSG_KEY, null);
+    let rewardMsgElement = document.getElementById('rewardMsg');
+    if (savedMsg) {
+        const remainingTime = savedMsg.expire - Date.now();
+        if (remainingTime > 0) {
+            if (!rewardMsgElement) {
+                rewardMsgElement = document.createElement('div');
+                rewardMsgElement.className = 'reward-msg'; rewardMsgElement.id = 'rewardMsg';
+                container.appendChild(rewardMsgElement);
+            }
+            rewardMsgElement.innerHTML = savedMsg.html; rewardMsgElement.classList.remove('show');
+            if (rewardMsgTimeout) clearTimeout(rewardMsgTimeout);
+            setTimeout(() => { rewardMsgElement.classList.add('show'); }, 50);
+            rewardMsgTimeout = setTimeout(() => {
+                 if (rewardMsgElement) {
+                    rewardMsgElement.classList.remove('show');
+                    setTimeout(() => { if(rewardMsgElement.parentNode === container) rewardMsgElement.remove(); }, 400);
+                }
+                safeRemove(REWARD_MSG_KEY); rewardMsgTimeout = null;
+            }, remainingTime);
+        } else { safeRemove(REWARD_MSG_KEY); if (rewardMsgElement && rewardMsgElement.parentNode === container) rewardMsgElement.remove(); }
+    } else { if (rewardMsgElement && rewardMsgElement.parentNode === container) rewardMsgElement.remove(); }
+}
+
+function restoreAdBtnState() {
+    const textSpan = adBtn.querySelector('span[data-i18n]');
+    const icon = adBtn.querySelector('i');
+    
+    if (isAdRunning) {
+        adBtn.classList.add('waiting'); adBtn.disabled = true;
+        if(textSpan) { textSpan.setAttribute('data-i18n', 'watching_ad'); textSpan.textContent = i18n[currentLang].watching_ad; }
+        if(icon) { icon.setAttribute('data-lucide', 'loader'); lucide.createIcons(); }
+        return; 
+    }
+
+    if (cnt >= MAX_ADS_PER_DAY) {
+        adBtn.classList.add('waiting'); 
+        adBtn.disabled = true; 
+        if(textSpan) { textSpan.setAttribute('data-i18n', 'limit_reached'); textSpan.textContent = i18n[currentLang].limit_reached; }
+        if(icon) { icon.setAttribute('data-lucide', 'lock'); lucide.createIcons(); }
+        msg.textContent = i18n[currentLang].msg_limit; 
+        checkAndDisplayRewardMsg(); 
+        return; 
+    }
+    
+    adBtn.classList.remove('waiting'); adBtn.disabled = false; 
+    if(textSpan) { textSpan.setAttribute('data-i18n', 'watch_ad'); textSpan.textContent = i18n[currentLang].watch_ad; }
+    if(icon) { icon.setAttribute('data-lucide', 'play'); lucide.createIcons(); }
+    msg.textContent = ''; checkAndDisplayRewardMsg();
+}
+
+adBtn.onclick = async () => {
+    update(); 
+    if (cnt >= MAX_ADS_PER_DAY) { restoreAdBtnState(); return; }
+    if (isAdRunning || adBtn.classList.contains('waiting')) return;
+    
+    isAdRunning = true; 
+    restoreAdBtnState();
+
+    if (rewardMsgTimeout) { clearTimeout(rewardMsgTimeout); rewardMsgTimeout = null; }
+    safeRemove(REWARD_MSG_KEY);
+    let rewardMsgElement = document.getElementById('rewardMsg');
+    if (rewardMsgElement) {
+         rewardMsgElement.classList.remove('show');
+         setTimeout(() => { const container = document.getElementById('adRewardNotificationContainer'); if(container && rewardMsgElement.parentNode === container) rewardMsgElement.remove(); }, 400); 
+    }
+    
+    msg.textContent = '';
+    
+    try {
+        if (!adManager && window.Adsgram) {
+            adManager = window.Adsgram.init({ blockId: "int-28369" });
+        }
+        
+        if (adManager) {
+            adManager.show().then((result) => {
+                giveAdReward();
+            }).catch((error) => {
+                resetAdBtnState();
+            });
+        } else {
+            resetAdBtnState();
+        }
+    } catch(e) {
+        resetAdBtnState();
+    } 
+};
+
+function giveAdReward() {
+    bal += REWARD_PER_AD; 
+    cnt++; 
+    
+    let rewardTextStr = i18n[currentLang].ad_reward_text.replace('{reward}', fC(REWARD_PER_AD));
+    
+    totalAdsAllTime++;
+    totalAdEarnAllTime += REWARD_PER_AD;
+    safeSet(TOTAL_ADS_KEY, totalAdsAllTime);
+    safeSet(TOTAL_AD_EARN_KEY, totalAdEarnAllTime);
+    
+    update(); 
+    displayRewardMsg(rewardTextStr);
+    
+    if (cnt >= MAX_ADS_PER_DAY) {
+        isAdRunning = false;
+        restoreAdBtnState();
+    } else {
+        resetAdBtnState();
+    }
+}
+
+function resetAdBtnState() {
+    isAdRunning = false; 
+    restoreAdBtnState();
+}
+
+const taskNotification = document.getElementById('taskNotification');
+const taskNotificationText = document.getElementById('taskNotificationText');
+function showTaskNotification(message) {
+    taskNotificationText.innerHTML = message;
+    taskNotification.classList.remove('notification-hide'); 
+    taskNotification.classList.add('notification-show');
+    setTimeout(() => { 
+        taskNotification.classList.remove('notification-show'); 
+        taskNotification.classList.add('notification-hide'); 
+    }, 3500);
+}
+
+function handleTaskClick(btnId, url, storageKey, reward) {
+    const btn = document.getElementById(btnId);
+    if (!btn || btn.disabled) return;
+    
+    window.open(url, '_blank'); 
+    btn.disabled = true; btn.classList.add('waiting'); 
+    btn.style.background = '';
+    btn.style.boxShadow = '';
+    btn.innerHTML = `<i data-lucide="loader" style="width:20px;height:20px;"></i> <span>${i18n[currentLang].checking}</span>`;
+    lucide.createIcons();
+    setTimeout(() => {
+        bal += reward; 
+        totalTasksAllTime++;
+        safeSet(TOTAL_TASKS_KEY, totalTasksAllTime);
+        safeSet(BAL_KEY, bal); 
+        localStorage.setItem(storageKey, '1'); 
+        update();
+        let sMsg = i18n[currentLang].task_success.replace('{reward}', fC(reward));
+        showTaskNotification(sMsg);
+    }, 4000);
+}
+
+document.getElementById('joinAppBtn').onclick = () => handleTaskClick('joinAppBtn', 'https://t.me/manatazapp', JOIN_APP_KEY, TASK_APP_REWARD);
+
+function showPage(id, btn){
+  if (btn.classList.contains('active')) return; 
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.menu button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  
+  if (id === 'adsPage') { restoreAdBtnState(); } 
+  else if (id === 'tasksPage') { updateTaskButtons(); } 
+  else {
+    let rewardMsgElement = document.getElementById('rewardMsg');
+    if (rewardMsgElement) rewardMsgElement.classList.remove('show');
+  }
+}
+
+const form = document.getElementById('form'); const details = document.getElementById('details');
+const amount = document.getElementById('amount'); const alertBox = document.getElementById('alert');
+const feeCalcBox = document.getElementById('feeCalcBox');
+const feeAmountSpan = document.getElementById('feeAmount');
+const receiveAmountSpan = document.getElementById('receiveAmount');
+
+function bindMethodClicks() {
+    document.querySelectorAll('.method').forEach(m => {
+      m.onclick = () => {
+        type = m.dataset.type;
+        methodName = m.dataset.name;
+        
+        document.getElementById('methodsContainer').style.display='none'; 
+        form.style.display='block';
+        
+        alertBox.style.display='none'; feeCalcBox.style.display='none';
+        details.value=''; amount.value='';
+        selectedNetwork = '';
+        
+        document.querySelectorAll('.network-btn').forEach(b => b.classList.remove('active'));
+
+        if(type === 'usdt') {
+            document.getElementById('networkWrapper').style.display = 'block';
+            details.style.display = 'none';
+            amount.style.display = 'none';
+            feeCalcBox.style.display = 'none';
+            document.getElementById('withdrawBtn').style.display = 'none';
+            details.type = 'text';
+            details.inputMode = 'text';
+        } else {
+            document.getElementById('networkWrapper').style.display = 'none';
+            details.style.display = 'block';
+            amount.style.display = 'block';
+            document.getElementById('withdrawBtn').style.display = 'flex';
+            details.type = 'text';
+            details.inputMode = 'numeric';
+            details.placeholder = type === 'bank' 
+                ? (currentLang==='tr' ? '16 haneli kart numarası' : '16 rəqəmli kart nömrəsi')
+                : (currentLang==='tr' ? '10 haneli telefon numarası' : '10 rəqəmli telefon nömrəsi daxil et');
+        }
+      };
+    });
+}
+
+document.querySelectorAll('.network-btn').forEach(btn => {
+    btn.onclick = () => {
+        document.querySelectorAll('.network-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        selectedNetwork = btn.dataset.net;
+        
+        details.style.display = 'block';
+        amount.style.display = 'block';
+        document.getElementById('withdrawBtn').style.display = 'flex';
+        
+        if(selectedNetwork === 'bep20') {
+            details.placeholder = currentLang === 'tr' ? 'BEP20 adresini girin' : 'BEP20 adresini daxil edin';
+        } else {
+            details.placeholder = currentLang === 'tr' ? 'TON adresini girin' : 'TON adresini daxil edin';
+        }
+    };
+});
+
+details.addEventListener('input', function() {
+    if(type !== 'usdt') {
+        this.value = this.value.replace(/\D/g, ''); 
+        let reqLength = type === 'bank' ? 16 : 10;
+        if(this.value.length > reqLength) {
+            this.value = this.value.slice(0, reqLength);
+        }
+    } else {
+        this.value = this.value.replace(/[^a-zA-Z0-9]/g, '');
+    }
+});
+
+document.getElementById('backBtn').onclick=()=>{
+  form.style.display='none'; document.getElementById('methodsContainer').style.display='block'; alertBox.style.display='none'; type=''; selectedNetwork='';
+};
+
+function calculateFee() {
+    const amt_input = parseFloat(amount.value);
+    if (!isNaN(amt_input) && amt_input > 0) {
+        const fee = amt_input * FEE_PERCENT;
+        const receive = amt_input - fee;
+        
+        feeAmountSpan.textContent = fee.toFixed(3);
+        receiveAmountSpan.textContent = receive.toFixed(3);
+        
+        feeCalcBox.style.display = 'block';
+    } else {
+        feeCalcBox.style.display = 'none';
+    }
+}
+amount.addEventListener('input', calculateFee);
+
+document.getElementById('withdrawBtn').onclick=()=>{
+  const det = details.value.trim(); const input_amt = parseFloat(amount.value);
+  alertBox.style.display='none';
+
+  if(!type){ showErr(i18n[currentLang].err_method); return; }
+  
+  if(type === 'usdt' && !selectedNetwork) {
+      showErr(i18n[currentLang].err_network); return;
+  }
+  
+  if(type !== 'usdt') {
+      let reqLength = type === 'bank' ? 16 : 10;
+      if(det.length !== reqLength){
+          if(type === 'bank') showErr(i18n[currentLang].err_bank);
+          else showErr(i18n[currentLang].err_phone);
+          return;
+      }
+  } else {
+      if(det.length < 10) { 
+          showErr(i18n[currentLang].err_usdt); return;
+      }
+  }
+
+  if(isNaN(input_amt) || input_amt <= 0){ showErr(i18n[currentLang].err_amount); return; }
+  
+  let amt_azn = currentLang === 'tr' ? (input_amt / 26.4) : input_amt;
+  
+  const EPSILON = 0.0001; 
+  if(amt_azn < MIN_WITHDRAW - EPSILON){ 
+      showErr(`${i18n[currentLang].err_min} ${fC(MIN_WITHDRAW)}`); 
+      return; 
+  }
+  if(amt_azn > bal + EPSILON){ showErr(i18n[currentLang].err_bal); return; }
+  
+  bal = Math.max(0, bal - amt_azn); 
+  safeSet(BAL_KEY,bal); update();
+  
+  const historyMethodName = type === 'usdt' ? `USDT (${selectedNetwork.toUpperCase()})` : methodName;
+  const historyItem = { type: type, methodName: historyMethodName, amount: amt_azn, status: 'pending', date: getTrueTime() };
+  withdrawHistory.push(historyItem); safeSet(HISTORY_KEY, withdrawHistory); renderHistory(); 
+
+  alertBox.innerHTML=`<i data-lucide="check-circle" style="vertical-align: middle; margin-right: 5px;"></i> ${i18n[currentLang].success_withdraw}`; 
+  lucide.createIcons();
+  alertBox.className='alert success'; alertBox.style.display='block';
+  setTimeout(()=>{
+    form.style.display='none'; document.getElementById('methodsContainer').style.display='block'; alertBox.style.display='none'; type=''; selectedNetwork='';
+  }, 2500);
+};
+
+function showErr(msg){ alertBox.innerHTML=`<i data-lucide="alert-circle" style="vertical-align: middle; margin-right: 5px;"></i> ${msg}`; lucide.createIcons(); alertBox.className='alert error'; alertBox.style.display='block'; }
+
+window.onload = async () => {
+    document.getElementById('loadingScreen').style.visibility = 'visible';
+    document.getElementById('loadingScreen').style.opacity = '1';
+    
+    await syncServerTime();
+    loadProfile();
+    updateTexts();
+    update();
+
+    setTimeout(() => {
+        document.getElementById('loadingScreen').style.opacity = '0';
+        setTimeout(() => { document.getElementById('loadingScreen').style.display = 'none'; }, 600);
+        
+        let currentMoscowDate = getMoscowDateStr(getTrueTime());
+        let lastClaimDate = localStorage.getItem(DAILY_CLAIM_DATE_KEY);
+        let hasClaimed100 = safeGet(CELEBRATION_100_CLAIMED_KEY, false);
+
+        if (!hasClaimed100) {
+            document.getElementById('celebrationModal').classList.add('show');
+        } else if (lastClaimDate !== currentMoscowDate) {
+            document.getElementById('dailyBonusModal').classList.add('show');
+        }
+    }, 1500);
+};
+</script>
+</body>
+</html>
