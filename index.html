@@ -32,7 +32,7 @@ if (window.Telegram && window.Telegram.WebApp) {
   --text-light: #FFFFFF;
   --text-dark: #0F172A;
   --text-muted: #64748B;
-  --accent: #00A651; 
+  --accent: #00A651;
   --accent-red: #EF4444; 
   --menu-bg: rgba(255, 255, 255, 0.95);
   --progress-bg: rgba(0, 166, 81, 0.1);
@@ -689,7 +689,7 @@ const i18n = {
         err_method: "Çıxarış üsulunu seçin",
         err_network: "Zəhmət olmasa ağ seçin",
         err_bank: "Kart nömrəsi tam 16 rəqəm olmalıdır",
-        err_phone: "Nömrə tam 9 və ya 10 rəqəm olmalıdır",
+        err_phone: "Nömrə düzgün formatda deyil (məs: 055 123 45 67)",
         err_usdt: "Adres düzgün deyil",
         err_amount: "Düzgün məbləğ daxil edin",
         err_min: "Minimum çıxarış",
@@ -747,7 +747,7 @@ const i18n = {
         err_method: "Çekim yöntemini seçin",
         err_network: "Lütfen ağ seçin",
         err_bank: "Kart numarası tam 16 rakam olmalıdır",
-        err_phone: "Numara tam 9 veya 10 rakam olmalıdır",
+        err_phone: "Numara geçersiz formatta (örn: 055 123 45 67)",
         err_usdt: "Adres geçersiz",
         err_amount: "Geçerli bir miktar girin",
         err_min: "Minimum çekim",
@@ -1292,48 +1292,70 @@ document.getElementById('joinAppBtn').addEventListener('click', () => {
     }
 });
 
-// --- YENİ ƏLAVƏ EDİLƏN HİSSƏ: ÇIXARIŞ FORMASININ MƏNTİQİ ---
+/* ========================================= */
+/* --- NEW EVENT LISTENERS & FIXES BELOW --- */
+/* ========================================= */
 
+// 1. Method Selection Listener
 document.getElementById('methods').addEventListener('click', (e) => {
     const methodEl = e.target.closest('.method');
-    if(!methodEl) return;
+    if (!methodEl) return;
     
     type = methodEl.getAttribute('data-type');
     methodName = methodEl.getAttribute('data-name');
     
     document.getElementById('methodsContainer').style.display = 'none';
     document.getElementById('form').style.display = 'block';
-    document.getElementById('alert').style.display = 'none';
-    document.getElementById('feeCalcBox').style.display = 'none';
-    document.getElementById('details').value = '';
-    document.getElementById('amount').value = '';
-    selectedNetwork = '';
-    document.querySelectorAll('.network-btn').forEach(b => b.classList.remove('active'));
     
     const detailsInput = document.getElementById('details');
-    const nwWrapper = document.getElementById('networkWrapper');
+    const networkWrapper = document.getElementById('networkWrapper');
     
-    if(type === 'usdt') {
-        nwWrapper.style.display = 'block';
-        detailsInput.placeholder = currentLang === 'tr' ? 'USDT Adresi' : 'USDT Adresi';
-        detailsInput.setAttribute('inputmode', 'text');
+    // Reset Form
+    detailsInput.value = '';
+    document.getElementById('amount').value = '';
+    document.getElementById('alert').style.display = 'none';
+    document.getElementById('feeCalcBox').style.display = 'none';
+    
+    // Toggle Network Field for USDT
+    if (type === 'usdt') {
+        networkWrapper.style.display = 'block';
+        selectedNetwork = 'bep20'; // Default network
+        document.querySelectorAll('.network-btn').forEach(b => b.classList.remove('active'));
+        document.querySelector('.network-btn[data-net="bep20"]').classList.add('active');
     } else {
-        nwWrapper.style.display = 'none';
+        networkWrapper.style.display = 'none';
+        selectedNetwork = '';
+    }
+    
+    // Apply Dynamic Placeholders
+    if (type === 'bank') {
+        detailsInput.placeholder = currentLang === 'tr' ? 'Kart Numarası (16 Hane)' : 'Kart Nömrəsi (16 rəqəm)';
         detailsInput.setAttribute('inputmode', 'numeric');
-        if(type === 'bank') {
-            detailsInput.placeholder = currentLang === 'tr' ? 'Kart Numarası (16 rakam)' : 'Kart Nömrəsi (16 rəqəm)';
-        } else {
-            detailsInput.placeholder = currentLang === 'tr' ? 'Numara (örn. 501234567)' : 'Nömrə (örn. 501234567)';
-        }
+    } else if (type === 'usdt') {
+        detailsInput.placeholder = currentLang === 'tr' ? 'Cüzdan Adresi' : 'Cüzdan Ünvanı';
+        detailsInput.removeAttribute('inputmode');
+    } else if (type === 'bakcell') {
+        detailsInput.placeholder = currentLang === 'tr' ? 'Örn: 055 123 45 67 (veya 099)' : 'Məs: 055 123 45 67 (099 və s.)';
+        detailsInput.setAttribute('inputmode', 'numeric');
+    } else if (type === 'azercell') {
+        detailsInput.placeholder = currentLang === 'tr' ? 'Örn: 050 123 45 67 (veya 051, 010)' : 'Məs: 050 123 45 67 (051, 010 və s.)';
+        detailsInput.setAttribute('inputmode', 'numeric');
+    } else if (type === 'nar') {
+        detailsInput.placeholder = currentLang === 'tr' ? 'Örn: 070 123 45 67 (veya 077)' : 'Məs: 070 123 45 67 (077 və s.)';
+        detailsInput.setAttribute('inputmode', 'numeric');
+    } else if (type === 'm10') {
+        detailsInput.placeholder = currentLang === 'tr' ? 'Örn: 055 123 45 67 (Tüm operatörler)' : 'Məs: 055 123 45 67 (Bütün operatorlar)';
+        detailsInput.setAttribute('inputmode', 'numeric');
     }
 });
 
+// 2. Back Button Listener
 document.getElementById('backBtn').addEventListener('click', () => {
     document.getElementById('form').style.display = 'none';
     document.getElementById('methodsContainer').style.display = 'block';
-    type = '';
 });
 
+// 3. Network Selection Buttons (USDT)
 document.querySelectorAll('.network-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
         document.querySelectorAll('.network-btn').forEach(b => b.classList.remove('active'));
@@ -1342,71 +1364,88 @@ document.querySelectorAll('.network-btn').forEach(btn => {
     });
 });
 
+// 4. Amount Calculation & Fee Logic
 document.getElementById('amount').addEventListener('input', (e) => {
     const val = parseFloat(e.target.value);
     const box = document.getElementById('feeCalcBox');
-    if(isNaN(val) || val <= 0) {
+    if (isNaN(val) || val <= 0) {
         box.style.display = 'none';
         return;
     }
     box.style.display = 'block';
     const fee = val * FEE_PERCENT;
     const final = val - fee;
-    document.getElementById('feeAmount').textContent = fC(fee, true);
-    document.getElementById('receiveAmount').textContent = fC(final, true);
+    document.getElementById('feeAmount').textContent = fee.toFixed(3);
+    document.getElementById('receiveAmount').textContent = final.toFixed(3);
 });
 
-function showAlert(msg, isError = true) {
+// 5. Withdrawal Logic & Complete Currency Handling Safety
+function showAlert(msg, isSuccess = false) {
     const alertEl = document.getElementById('alert');
     alertEl.textContent = msg;
-    alertEl.className = 'alert ' + (isError ? 'error' : 'success');
+    alertEl.className = 'alert ' + (isSuccess ? 'success' : 'error');
     alertEl.style.display = 'block';
-    setTimeout(() => alertEl.style.display = 'none', 3000);
+    setTimeout(() => { alertEl.style.display = 'none'; }, 3000);
 }
 
 document.getElementById('withdrawBtn').addEventListener('click', () => {
-    const details = document.getElementById('details').value.trim();
-    const amount = parseFloat(document.getElementById('amount').value);
-    const minW = currentLang === 'tr' ? 132 : MIN_WITHDRAW;
+    const details = document.getElementById('details').value.replace(/\s+/g, '');
+    const amountInput = parseFloat(document.getElementById('amount').value);
     
-    if(!type) return showAlert(i18n[currentLang].err_method);
+    if (!type) return showAlert(i18n[currentLang].err_method);
     
-    if(type === 'usdt') {
-        if(!selectedNetwork) return showAlert(i18n[currentLang].err_network);
-        if(details.length < 10) return showAlert(i18n[currentLang].err_usdt);
-    } else if(type === 'bank') {
-        if(!/^\d{16}$/.test(details.replace(/\s/g, ''))) return showAlert(i18n[currentLang].err_bank);
-    } else {
-        if(!/^\d{9,10}$/.test(details.replace(/\s/g, ''))) return showAlert(i18n[currentLang].err_phone);
+    // Number Format & Length Validation (Safely allows spaces initially, checks for exact digit limit)
+    if (type === 'bank') {
+        if (!/^\d{16}$/.test(details)) return showAlert(i18n[currentLang].err_bank);
+    } else if (['bakcell', 'azercell', 'nar', 'm10'].includes(type)) {
+        // Any AZ number: Starts with 0, requires exactly 9 digits after 0 (10 total)
+        if (!/^0\d{9}$/.test(details)) return showAlert(i18n[currentLang].err_phone);
+    } else if (type === 'usdt') {
+        if (details.length < 10) return showAlert(i18n[currentLang].err_usdt);
+        if (!selectedNetwork) return showAlert(i18n[currentLang].err_network);
     }
     
-    if(isNaN(amount) || amount <= 0) return showAlert(i18n[currentLang].err_amount);
-    if(amount < minW) return showAlert(`${i18n[currentLang].err_min}: ${fC(minW)}`);
-    if(amount > bal) return showAlert(i18n[currentLang].err_bal);
+    if (isNaN(amountInput) || amountInput <= 0) return showAlert(i18n[currentLang].err_amount);
     
-    bal -= amount;
-    safeSet(BAL_KEY, bal);
+    // Scale Minimum Limit Check depending on UI language currency
+    let minAmount = currentLang === 'tr' ? (MIN_WITHDRAW * 26.4) : MIN_WITHDRAW;
+    if (amountInput < minAmount) {
+        return showAlert(i18n[currentLang].err_min + ` ${minAmount.toFixed(2)} ${currentLang === 'tr' ? 'TL' : '₼'}`);
+    }
+    
+    // Pull the available balance directly scaled for standard visual checks
+    let availableBalance = currentLang === 'tr' ? (bal * 26.4) : bal;
+    
+    if (amountInput > availableBalance) return showAlert(i18n[currentLang].err_bal);
+    
+    // Ensure pure AZN internal deduction logic (Eliminates TL -> AZN logic bleed/bugs)
+    let deductAzn = currentLang === 'tr' ? (amountInput / 26.4) : amountInput;
+    bal -= deductAzn;
     
     withdrawHistory.push({
         type: type,
-        methodName: methodName + (selectedNetwork ? ` (${selectedNetwork.toUpperCase()})` : ''),
-        details: details,
-        amount: amount,
-        date: Date.now(),
-        status: 'pending'
+        methodName: methodName,
+        amount: deductAzn, // Store history explicitly as the raw unit base
+        date: Date.now()
     });
-    safeSet(HISTORY_KEY, withdrawHistory);
     
-    showAlert(i18n[currentLang].success_withdraw, false);
+    safeSet(HISTORY_KEY, withdrawHistory);
+    safeSet(BAL_KEY, bal);
+    
     update();
     renderHistory();
     
+    document.getElementById('details').value = '';
+    document.getElementById('amount').value = '';
+    document.getElementById('feeCalcBox').style.display = 'none';
+    
+    showAlert(i18n[currentLang].success_withdraw, true);
+    
     setTimeout(() => {
-        document.getElementById('backBtn').click();
-    }, 1500);
+        document.getElementById('form').style.display = 'none';
+        document.getElementById('methodsContainer').style.display = 'block';
+    }, 2000);
 });
-
-// --- SON ---
 
 window.addEventListener('load', () => {
     syncServerTime().then(() => {
